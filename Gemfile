@@ -1,3 +1,5 @@
 source 'https://gems.ruby-china.com'
 
-gem 'sinatra'
+gem 'async-redis'
+gem 'falcon'
+gem 'mongoid'
