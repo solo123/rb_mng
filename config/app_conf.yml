@@ -1,0 +1,23 @@
+production:
+  gateway_host: 'http://gateway.pooulcloud.cn'
+  key_dir: '/home/prod/szpl/current/cert'
+  home_dir: '/home/prod/szpl/current'
+  biz_send:
+    host: '172.18.183.142'
+    prg:  'orders_common'
+
+development:
+  gateway_host: 'http://gateway-test.pooulcloud.cn'
+  key_dir: '/opt/szpl_test/current/cert'
+  home_dir: '/js/websites/szpl'
+  biz_send:
+    host: '119.23.25.140'
+    prg:  'orders_common_test'
+
+test:
+  gateway_host: 'http://pooultest.free.ngrok.cc'
+  key_dir: '/Users/dominic/Documents/szpl/cert'
+  home_dir: '/js/websites/szpl'
+  biz_send:
+    host: '172.18.183.142'
+    prg:  'orders_common_test'

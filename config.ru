@@ -1,11 +1,6 @@
-require 'rack'
-require_relative 'app/middleware/log_every_req'
+require 'require_all'
+require_all %w[app config lib helper model]
 
-app = -> (env) do
-    req = Rack::Request.new(env)
-    #sleep 3
-    [200, {}, ["Hello66 there!#{req.path_info}"]]
-end
-
-use LogEveryReq
-run app
+puts ">> server start..."
+use Ns::LogJsonReq
+run Ns::App.new

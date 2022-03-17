@@ -1,0 +1,15 @@
+development:
+  clients:
+    default:
+      database: mon
+      hosts:
+        - localhost:27017
+      options:
+        server_selection_timeout: 3
+
+    pay_gateway:
+      database: gw
+      hosts:
+        - localhost:27017
+      options:
+        server_selection_timeout: 1
