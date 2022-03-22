@@ -7,14 +7,16 @@ Async do |task|
     http_client = Async::HTTP::Internet.new
     1000.times do
         task.async do
-            t = rand
-            res = http_client.get("http://localhost:3000/delay/#{t}")
-            js = JSON.parse(res.read)
-            if js['delay'] != t
-                puts "error: #{js['delay']} - #{t}"
-            else
-                print "%.2f, " % t
-            end
+            t = rand(1000)
+            res = http_client.get("http://localhost:3000/v1/test/sleep/#{t.to_i}")
+            dt = res.read
+            print dt
+            #js = JSON.parse(res.read)
+            #if js['delay'] != t
+            #    puts "error: #{js['delay']} - #{t}"
+            #else
+            #    print "%.2f, " % t
+            #end
         end
     end
 end

@@ -1,14 +1,13 @@
 GEM
   remote: https://gems.ruby-china.com/
   specs:
-    activemodel (6.1.4.6)
-      activesupport (= 6.1.4.6)
-    activesupport (6.1.4.6)
+    activemodel (7.0.2.3)
+      activesupport (= 7.0.2.3)
+    activesupport (7.0.2.3)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
-      zeitwerk (~> 2.3)
     async (1.30.1)
       console (~> 1.10)
       nio4r (~> 2.3)
@@ -25,7 +24,7 @@ GEM
       protocol-http2 (~> 0.14.0)
     async-http-cache (0.4.2)
       async-http (~> 0.56)
-    async-io (1.32.2)
+    async-io (1.33.0)
       async
     async-pool (0.3.9)
       async (>= 1.25)
@@ -34,6 +33,10 @@ GEM
       async-io (~> 1.10)
       async-pool (~> 0.2)
       protocol-redis (~> 0.6.0)
+    async-websocket (0.19.0)
+      async-http (~> 0.54)
+      async-io (~> 1.23)
+      protocol-websocket (~> 0.7.0)
     bson (4.14.1)
     build-environment (1.13.0)
     concurrent-ruby (1.1.9)
@@ -52,15 +55,18 @@ GEM
       rack (>= 1.0)
       samovar (~> 2.1)
     fiber-local (1.0.0)
-    i18n (1.9.1)
+    haml (5.2.2)
+      temple (>= 0.8.0)
+      tilt
+    i18n (1.10.0)
       concurrent-ruby (~> 1.0)
     localhost (1.1.9)
     mapping (1.1.1)
     minitest (5.15.0)
     mongo (2.17.0)
       bson (>= 4.8.2, < 5.0.0)
-    mongoid (7.3.3)
-      activemodel (>= 5.1, < 6.2)
+    mongoid (7.3.4)
+      activemodel (>= 5.1, < 7.1, != 7.0.0)
       mongo (>= 2.10.5, < 3.0.0)
       ruby2_keywords (~> 0.0.5)
     nio4r (2.5.8)
@@ -75,16 +81,26 @@ GEM
       protocol-hpack (~> 1.4)
       protocol-http (~> 0.18)
     protocol-redis (0.6.1)
+    protocol-websocket (0.7.5)
+      protocol-http (~> 0.2)
+      protocol-http1 (~> 0.2)
     rack (2.2.3)
     require_all (3.0.0)
+    roda (3.54.0)
+      rack
+    roda-websockets (0.1.0)
+      async-websocket (~> 0.12)
+      falcon (~> 0.33)
+      roda (~> 3.0)
     ruby2_keywords (0.0.5)
     samovar (2.1.4)
       console (~> 1.0)
       mapping (~> 1.0)
+    temple (0.8.2)
+    tilt (2.0.10)
     timers (4.3.3)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
-    zeitwerk (2.5.4)
 
 PLATFORMS
   x86_64-darwin-21
@@ -92,8 +108,12 @@ PLATFORMS
 DEPENDENCIES
   async-redis
   falcon
+  haml
   mongoid
   require_all
+  roda
+  roda-websockets
+  tilt
 
 BUNDLED WITH
    2.3.3

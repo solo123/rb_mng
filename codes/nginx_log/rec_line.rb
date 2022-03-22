@@ -14,9 +14,10 @@ module Codes
         metric.each do |k,v|
           nm = pre_names + [k]
           line = {
-            ts: @time,
+            ts: @time * 1000,
             level: nm.length,
-            name: nm,
+            name: nm.join('/'),
+            names: nm,
           }
           line.merge!(v.slice(*INDICATOR_NAMES))
           @handler.call(line) if @handler

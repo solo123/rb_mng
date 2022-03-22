@@ -1,6 +1,8 @@
 #!/usr/bin/env -S falcon host
 # frozen_string_literal: true
 
+# bundle exec falcon host
+
 # Force to always use threads instead of processes/forks
 module Falcon
   module Command
@@ -12,11 +14,14 @@ module Falcon
   end
 end
 
-load :rack
+load :rack, :supervisor
+supervisor
 
 hostname = File.basename(__dir__)
-rack hostname do
-  endpoint Async::HTTP::Endpoint.parse("http://localhost:3000").with(protocol: Async::HTTP::Protocol::HTTP1)
+rack 'hello.localhost' do
+  endpoint do
+    Async::HTTP::Endpoint.for('http', 'localhost', port:3000, protocol: Async::HTTP::Protocol::HTTP1)
+  end
 end
 
 #supervisor
