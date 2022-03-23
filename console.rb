@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
-require 'rubygems'
-require 'bundler/setup'
+
 require 'require_all'
 require 'mongoid'
 

@@ -1,8 +1,6 @@
 #!/usr/bin/env -S falcon host
 # frozen_string_literal: true
 
-# bundle exec falcon host
-
 # Force to always use threads instead of processes/forks
 module Falcon
   module Command
