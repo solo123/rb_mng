@@ -3,7 +3,7 @@
 require 'require_all'
 require 'mongoid'
 
-require_all %w[app config lib helper model model_gw]
+require_all %w[init app lib helper model model_gw]
 include Ns
 
 def reload!(print = true)

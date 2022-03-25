@@ -1,7 +1,7 @@
 require 'require_all'
 require 'mongoid'
 
-require_all %w[app config lib helper model]
+require_all %w[init app lib helper model]
 
 puts ">> server start..."
 #use Ns::LogJsonReq
