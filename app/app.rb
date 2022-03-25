@@ -1,4 +1,5 @@
 require "roda"
+require "async/container"
 
 module Ns
   class App < Roda
@@ -32,6 +33,23 @@ module Ns
           r.get("demo.dat") {
             dt = MyLog.query_access_times
             dt.to_s
+          }
+          r.get('task_10'){
+            rt = ""
+            if $mytask
+              rt = "task: #{$mytask} running..."
+            else
+              $mytask = "my_task_10"
+              container = Async::Container.new
+              container.async do |task|
+                puts "> task #{$mytask} start..."
+                task.sleep(10)
+                puts "> task #{$mytask} end."
+                $mytask = nil
+              end
+              rt = "start #{$mytask}"
+            end
+            rt
           }
         }
       }
