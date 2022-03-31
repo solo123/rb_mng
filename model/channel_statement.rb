@@ -3,16 +3,15 @@ module Ns
     include Mongoid::MyDbTools
 
     field :doc_type, type: String
+    field :route, type: String
+    field :settle_type, type: String
     field :w_date, type: Date
 
-    COMMON_CHANNEL = %(
-      Ns::UpstreamDailyBill::Wechat::Success
-      Ns::UpstreamDailyBill::Alipay::Success
-      Ns::UpstreamDailyBill::Tl::Success
-    )
     def match?(ord)
-      if COMMON_CHANNEL.include?(self.doc_type)
-        self[:total_fee] == ord.total_fee && ord.trade_state == 0
+      if self.settle_type == 'Success'
+        self[:total_fee] == ord.total_fee
+      elsif self.settle_type == 'Refund'
+        self[:refund_fee] == ord.refund_fee && ord.refund_status == 0
       else
         false
       end

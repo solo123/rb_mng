@@ -15,46 +15,70 @@ def settle(dt)
   # fetch orders
   # fetch statements
   # settlement
-  settle_date = dt
-  rt = {s_date: dt}
+  rt = Ns::Settlement.find_or_create_by({s_date: dt})
   cnt = 0
-  Ns::ChannelStatement.where({w_date: dt, settle: nil}).each_with_index do |statement, index|
-    doc_type = statement.doc_type.split('::')[2]
-    rt[doc_type] = {cnt: 0, amount: 0} unless rt[doc_type]
-    rt[doc_type][:cnt] += 1
-    rt[doc_type][:amount] += statement.total_fee
+  Ns::ChannelStatement.where(w_date: dt).and(:settle.ne => 1).each_with_index do |statement, index|
     cnt += 1
-    ord = Ns::PayOrder.find(statement.pay_order_id)
-    if ord
-      if ord[:settle] == 1
-        statement.update({settle: 3})
-      elsif statement.match?(ord)
-        ord.update({settle: 1, s_date: statement.w_date})
-        statement.update({settle: 1})
+    if op_state == 'Success'
+      if statement.pay_order_id && (ord = Ns::PayOrder.find(statement.pay_order_id))
+        if ord[:settle] == 1
+          statement.update({settle: 3})  #duplicate
+        elsif statement.match?(ord)
+          ord.update({settle: 1, s_date: statement.w_date})
+          statement.update({settle: 1})  #match ok!
+        else
+          ord.update({settle: 2, s_date: statement.w_date})
+          statement.update({settle: 2})  #not match
+        end
       else
-        ord.update({settle: 2, s_date: statement.w_date})
-        statement.update({settle: 2})
+        statement.update({settle: 0})  #order not found
       end
-    else
-      statement.update({settle: 0})
+    elsif op_state == 'Refund'
+      if statement.refund_order_id && (rfd = Ns::Refund.find(statement.refund_order_id))
+        if rfd[:settle] == 1
+          statement.update({settle: 3})
+        elsif statement.match?(rfd)
+          rfd.update({settle: 1, s_date: statement.w_date})
+          statement.update({settle: 1})
+        else
+          rfd.update({settle: 2, s_date: statement.w_date})
+          statement.update({settle: 2})
+        end
+      else
+        statement.update({settle: 0})
+      end
     end
   end
   puts "new settlement: #{cnt}"
+end
 
-  # summary statements
-  rt.keys.each do |k|
-    if k != :s_date
-      cnt = Ns::ChannelStatement.where(s_date: dt).and(settle: 0).count
-      rt[k][:unmatch_settlements_count] = cnt if cnt > 0
-    end
-  end
-
+def summary(dt)
+  st = Ns::Settlement.find_or_create_by({s_date: dt})
+  st.unset(st.attributes.keys - ["_id", "s_date"])  # :statics, :channels
   # summary orders
-  Ns::PayOrder.where(trade_state: 0).and(s_date: nil).and(:updated_at.lte => dt+1)
-    .update_all(s_date: dt)
-  
+  Ns::PayOrder.where(trade_state: 0).and(s_date: nil).and(:created_at.gte => dt).and(:updated_at.lte => dt+1).update_all(s_date: dt)
+  Ns::Refund.where(refund_state: 0).and(s_date: nil).and(:created_at.gte => dt).and(:updated_at.lte => dt+1).update_all(s_date: dt)
+  st[:statics] = {
+    statement_count: Ns::ChannelStatement.where(w_date: dt).count,
+    order_count: Ns::PayOrder.where(s_date: dt).count,
+    refund_count: Ns::Refund.where(s_date: dt).count,
+  }
+
+  res = {}
   client = Mongoid.client(:default)
   ords = client[:ns_pay_orders]
+  agg = ords.aggregate([
+    {'$match': {trade_state: 0, s_date: dt}},
+    {'$group': {
+      _id: "$doc_type",
+      order_count: {'$sum': 1},
+    }},
+    {'$sort': {success_count: -1}}
+  ])
+  agg.each do |ag|
+    res[ag[:_id][14..]] = {order_count: ag[:order_count]}
+  end
+
   agg = ords.aggregate([
     {
       '$match': {trade_state: 0, s_date: dt, settle: {'$ne': 1}}
@@ -62,30 +86,45 @@ def settle(dt)
     {
       '$group': {
         _id: "$doc_type", 
-        cnt: {'$sum': 1},
-        amount: {'$sum': "$total_fee"}
+        error_count: {'$sum': 1},
       }
     }
   ])
   agg.each do |ag|
-    doc_type = ag["_id"].split('::')[2]
-    rt[doc_type] = {} unless rt[doc_type]
-    rt[doc_type][:unmatch_orders_count] = ag["cnt"]
-    rt[doc_type][:unmatch_orders_amount] = ag["amount"]
+    res[ag[:_id][14..]][:error_count] = ag[:error_count]
   end
 
-  puts "Settle: #{cnt} records."
-  puts rt.inspect
-  #Ns::Settlement.create!(rt)
+  stms = client[:ns_channel_statements]
+  agg = stms.aggregate([
+    {'$match': {w_date: dt}},
+    {'$group': {
+      _id: "$route",
+      statement_count: {'$sum': 1},
+    }}
+  ])
+  agg.each do |ag|
+    res[ag[:_id]] = {} unless res[ag[:_id]]
+    res[ag[:_id]][:statement_count] = ag[:statement_count]
+  end
+  st[:channels] = res
+  st.save!
+  puts st.attributes
 end
 
-def re_init
-  PayOrder.where(:settle.ne => nil).update_all(settle: nil)
-  ChannelStatement.where(:settle.ne => nil).update_all(settle: nil)
+def re_init(dt)
+  r = PayOrder.where(s_date: dt).update_all(settle: nil, s_date: nil)
+  puts "PayOrder init: #{r.n} recs"
+  r = ChannelStatement.where(:settle.ne => nil).update_all(settle: nil)
+  puts "Statement init: #{r.n} recs"
+  st = Settlement.find_by(s_date: dt)
+  if st
+    st.unset(st.attributes.keys - ["_id", "s_date"])
+    st.save
+  end
 end
 
 if ARGV.length < 2
-  puts "Usage: xxxx [init|do] [20220101]"
+  puts "Usage: xxxx [init|do|sum] [20220101]"
   return
 end
 
@@ -94,6 +133,8 @@ if ARGV[0] == "init"
   re_init(dt)
 elsif ARGV[0] == "do"
   settle(dt)
+elsif ARGV[0] == "sum"
+  summary(dt)
 else
   puts "unknow command: #{ARGV[0]}"
 end
