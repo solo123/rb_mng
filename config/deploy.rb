@@ -1,15 +1,7 @@
 require 'mina/deploy'
-#require 'mina/rails'
 require 'mina/bundler'
 require 'mina/git'
 require 'mina/rbenv'  # for rbenv support. (https://rbenv.org)
-# require 'mina/rvm'    # for rvm support. (https://rvm.io)
-
-# Basic settings:
-#   domain       - The hostname to SSH to.
-#   deploy_to    - Path to deploy into.
-#   repository   - Git repo to clone from. (needed by mina/git)
-#   branch       - Branch name to deploy. (needed by mina/git)
 
 set :application_name, 'mng_service'
 set :domain, 'pooul.svc'
@@ -17,16 +9,14 @@ set :deploy_to, '/home/jimmy/work/pooul_mng'
 set :repository, 'git@e.coding.net:pooul/Pooul/pooul_mng.git'
 set :branch, 'master'
 
-# Optional settings:
 set :user, 'jimmy'          # Username in the server to SSH to.
-#   set :port, '30000'           # SSH port number.
 set :forward_agent, true     # SSH forward_agent.
 
 # Shared dirs and files will be symlinked into the app-folder by the 'deploy:link_shared_paths' step.
 # Some plugins already add folders to shared_dirs like `mina/rails` add `public/assets`, `vendor/bundle` and many more
 # run `mina -d` to see all folders and files already included in `shared_dirs` and `shared_files`
-# set :shared_dirs, fetch(:shared_dirs, []).push('public/assets')
-set :shared_files, fetch(:shared_files, []).push('.ruby-version', 'falcon.rb', 'config/mongoid.yml')
+set :shared_dirs, fetch(:shared_dirs, []).push('vendor/bundle')
+set :shared_files, fetch(:shared_files, []).push('.ruby-version', 'config/mongoid.yml')
 
 # This task is the environment that is loaded for all remote run commands, such as
 # `mina deploy` or `mina rake`.
@@ -63,6 +53,7 @@ task :deploy do
 
     on :launch do
       in_path(fetch(:current_path)) do
+        command %{cp ../shared/falcon.rb .}
         #command %{mkdir -p tmp/}
         #command %{touch tmp/restart.txt}
       end

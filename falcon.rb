@@ -24,7 +24,7 @@ end
 =begin
 rack hostname do
     endpoint ::Falcon::ProxyEndpoint.unix(
-        '/tmp/falcon.sock',
+        '/home/jimmy/test/falcon.sock',
         scheme: 'http',
         protocol: Async::HTTP::Protocol::HTTP1
     )

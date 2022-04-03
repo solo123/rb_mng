@@ -7,4 +7,4 @@ puts ">> server start..."
 #use Ns::LogJsonReq
 #run Ns::App.freeze.app
 #run Ns::AppHtml.freeze.app
-run Ns::App.freeze.app
+run Ns::App.app
