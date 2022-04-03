@@ -18,10 +18,6 @@ module Ns
         "Home here"
       }
 
-      r.on('html') {
-        r.run AppHtml
-      }
-
       r.on('settle'){
         r.on('error'){
           r.get('orders', String){|dt|

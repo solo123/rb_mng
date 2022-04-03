@@ -11,12 +11,13 @@ db.ns_pay_orders.aggregate([
 }
 ])
 
-db.ns_pay_orders.find()
+# unmatch orders
+db.ns_pay_orders.find({
+    s_date: ISODate("2022-01-02"),
+    doc_type: 'Ns::PayOrder::Wechat',
+    settle: {'$ne': 1}
+})
 
-db.ns_pay_orders.find({settle: {"$ne": null}, doc_type: 'Ns::PayOrder::Alipay'})
-
-db.ns_pay_orders.find({created_at: {"$lte": ISODate("2022-01-01")}, settle: {'$ne': 0}})
-db.ns_pay_orders.find({created_at: {"$lte": "2022-01-02"}}) , "s_date" : null})
-db.ns_pay_orders.find({s_date: {'$ne': null}}).update_all(s_date: null)
-.count()
-
+db.ns_pay_orders.find(ObjectId("61d2b9f8fd4eb0095ca516a0"))
+db.ns_pay_orders.find({})
+.sort({_id:-1})

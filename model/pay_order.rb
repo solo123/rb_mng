@@ -8,5 +8,8 @@ module Ns
     field :trade_state, type: Integer
     
     field :s_date, type: Date
+
+    index({pay_type: 1})
+    index({s_date: 1})
   end
 end
