@@ -7,4 +7,4 @@ require_all %w[init app lib helper model]
 #use Ns::LogJsonReq
 #run Ns::App.freeze.app
 #run Ns::AppHtml.freeze.app
-run Ns::App.app
+run Ns::Route::App.app
