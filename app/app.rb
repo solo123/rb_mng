@@ -6,12 +6,12 @@ module Ns
     class App < Roda
       #plugin :websockets
       plugin :default_headers, {
-               "Content-Type" => "application/json",
-               "Access-Control-Allow-Origin" => "*", #todo: is it need to specify ?
-               "Access-Control-Allow-Methods" => "GET, POST, PATCH, PUT, DELETE, OPTIONS, OPTNS",
-               "Access-Control-Allow-Headers" => "Origin, Content-Type, X-Auth-Token, Authorization",
-               "Access-Control-Allow-Credentials" => "true",
-             }
+        "Content-Type" => "application/json",
+        "Access-Control-Allow-Origin" => "*", #todo: is it need to specify ?
+        "Access-Control-Allow-Methods" => "GET, POST, PATCH, PUT, DELETE, OPTIONS, OPTNS",
+        "Access-Control-Allow-Headers" => "Origin, Content-Type, X-Auth-Token, Authorization",
+        "Access-Control-Allow-Credentials" => "true",
+      }
       plugin :json
       plugin :hash_routes
 
@@ -36,6 +36,7 @@ module Ns
             r.to_json
           }
         }
+        
         r.on("v1") {
           r.on("test") {
             r.get("sleep", Integer) { |seconds|
