@@ -27,8 +27,13 @@
     "method": "GET",
     "sortNum": 20000,
     "created": "2022-04-04T05:54:35.543Z",
-    "modified": "2022-04-04T05:55:02.303Z",
-    "headers": [],
+    "modified": "2022-04-13T08:34:25.850Z",
+    "headers": [
+      {
+        "name": "Authorization",
+        "value": "666"
+      }
+    ],
     "params": [],
     "tests": []
   },

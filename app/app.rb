@@ -17,6 +17,7 @@ module Ns
       plugin :hash_routes
 
       route do |r|
+        response.status = 200
         r.root {
           "Home here"
         }
