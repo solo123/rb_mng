@@ -1,0 +1,16 @@
+<html>
+  <body>
+    <h1>Hello!</h1>
+  </body>
+</html>
+<script type="text/javascript">
+const xhr = new XMLHttpRequest();
+const url = 'https://test.service.pooul.com/ping';
+
+xhr.open('GET', url);
+xhr.setRequestHeader("Authorization", '666');
+xhr.onload = function () {
+  alert( xhr.responseText );
+};
+xhr.send();
+</script>

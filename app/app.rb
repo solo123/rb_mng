@@ -13,7 +13,7 @@ module Ns
         "Access-Control-Allow-Credentials" => "true",
         "Access-Control-Expose-Headers" =>  "Authorization",
       }
-      plugin :json
+      plugin :json, serializer: proc{|o| {code: 0, msg: nil, data: o}.to_json(root: true)}
       plugin :hash_routes
 
       route do |r|
