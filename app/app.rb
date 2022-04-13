@@ -9,8 +9,9 @@ module Ns
         "Content-Type" => "application/json",
         "Access-Control-Allow-Origin" => "*", #todo: is it need to specify ?
         "Access-Control-Allow-Methods" => "GET, POST, PATCH, PUT, DELETE, OPTIONS, OPTNS",
-        "Access-Control-Allow-Headers" => "*, Origin, Content-Type, X-Auth-Token, Authorization, X-Requested-With",
+        "Access-Control-Allow-Headers" => "*, Scene, Authorization, Content-Type, Origin, X-Requested-With",
         "Access-Control-Allow-Credentials" => "true",
+        "Access-Control-Expose-Headers" =>  "Authorization",
       }
       plugin :json
       plugin :hash_routes
