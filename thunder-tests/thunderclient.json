@@ -23,18 +23,29 @@
     "colId": "70e08154-3570-4174-be50-e66b8089b8fb",
     "containerId": "",
     "name": "对账信息列表",
-    "url": "{{host}}/settle/index",
+    "url": "{{host}}/settle/index?page_size=3&small_id=5",
     "method": "GET",
     "sortNum": 20000,
     "created": "2022-04-04T05:54:35.543Z",
-    "modified": "2022-04-13T08:34:25.850Z",
+    "modified": "2022-04-13T17:49:11.661Z",
     "headers": [
       {
         "name": "Authorization",
         "value": "666"
       }
     ],
-    "params": [],
+    "params": [
+      {
+        "name": "page_size",
+        "value": "3",
+        "isPath": false
+      },
+      {
+        "name": "small_id",
+        "value": "5",
+        "isPath": false
+      }
+    ],
     "tests": []
   },
   {
@@ -56,13 +67,24 @@
     "colId": "70e08154-3570-4174-be50-e66b8089b8fb",
     "containerId": "",
     "name": "日对账单差错：渠道数据",
-    "url": "{{host}}/settle/errors/statements/{{settle_date}}/ztfz",
+    "url": "{{host}}/settle/errors/statements/{{settle_date}}/ztfz?page_size=2&big_id=1308245",
     "method": "GET",
     "sortNum": 40000,
     "created": "2022-04-06T03:17:09.026Z",
-    "modified": "2022-04-06T04:46:16.492Z",
+    "modified": "2022-04-13T17:48:40.876Z",
     "headers": [],
-    "params": [],
+    "params": [
+      {
+        "name": "page_size",
+        "value": "2",
+        "isPath": false
+      },
+      {
+        "name": "big_id",
+        "value": "1308245",
+        "isPath": false
+      }
+    ],
     "tests": []
   },
   {
