@@ -11,7 +11,7 @@ module Ns
           Ns::Settlement.where(cnd).order(_id: -1).limit(page_size).all.to_a
         }
         r.get(String){|dt|
-          Ns::Settlement.find_by(s_date: dt.to_date).to_a
+          Ns::Settlement.find_by(s_date: dt.to_date).attributes
         }
         r.on("errors") {
           r.get("statements", String) { |dt|
