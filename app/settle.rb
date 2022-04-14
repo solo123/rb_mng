@@ -12,7 +12,12 @@ module Ns
           Ns::Settlement.find_by(s_date: dt.to_date).to_json
         }
         r.on("errors") {
-          cnd = {_id: {'$gt': r.params['last_id'].to_i}} if r.params['last_id']
+          cnd = {}
+          if r.params['last_id']
+            last_id = r.params['last_id'].to_i
+            last_id = r.params['last_id'] if r.params['last_id'].length > 20
+            cnd = {_id: {'$gt': last_id}}
+          end
           r.get("statements", String) { |dt|
             Ns::ChannelStatement.where(w_date: dt.to_date).and(:settle.ne => 1).and(cnd).order(_id: 1).limit(page_size).all.to_a
           }
@@ -20,6 +25,7 @@ module Ns
             Ns::ChannelStatement.where(w_date: dt.to_date).and(:settle.ne => 1).and(route: route.classify).and(cnd).order(_id: 1).limit(page_size).all.to_a
           }
           r.get("orders", String) { |dt|
+            puts "> cnd:#{cnd}"
             Ns::PayOrder.where(s_date: dt.to_date).and(:settle.ne => 1).and(cnd).order(_id: 1).limit(page_size).all.to_a
           }
           r.get("orders", String, String) { |dt, route|
