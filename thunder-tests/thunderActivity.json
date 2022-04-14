@@ -54,5 +54,35 @@
     "headers": [],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "c8662787-c66b-4d46-aa72-ce3a45ebe83a",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{host}}/settle/index?page_size=3&last_id=5",
+    "url": "{{host}}/settle/index?page_size=3&last_id=5",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2022-04-14T05:11:31.074Z",
+    "modified": "2022-04-14T05:11:31.135Z",
+    "headers": [
+      {
+        "name": "Authorization",
+        "value": "666"
+      }
+    ],
+    "params": [
+      {
+        "name": "page_size",
+        "value": "3",
+        "isPath": false
+      },
+      {
+        "name": "last_id",
+        "value": "5",
+        "isPath": false
+      }
+    ],
+    "tests": []
   }
 ]

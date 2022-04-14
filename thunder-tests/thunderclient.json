@@ -23,11 +23,11 @@
     "colId": "70e08154-3570-4174-be50-e66b8089b8fb",
     "containerId": "",
     "name": "对账信息列表",
-    "url": "{{host}}/settle/index?page_size=3&last_id=5",
+    "url": "{{host}}/settle/index",
     "method": "GET",
     "sortNum": 20000,
     "created": "2022-04-04T05:54:35.543Z",
-    "modified": "2022-04-14T03:49:58.817Z",
+    "modified": "2022-04-14T05:17:30.311Z",
     "headers": [
       {
         "name": "Authorization",
@@ -38,11 +38,13 @@
       {
         "name": "page_size",
         "value": "3",
+        "isDisabled": true,
         "isPath": false
       },
       {
         "name": "last_id",
         "value": "5",
+        "isDisabled": true,
         "isPath": false
       }
     ],
@@ -57,8 +59,13 @@
     "method": "GET",
     "sortNum": 30000,
     "created": "2022-04-06T03:08:05.059Z",
-    "modified": "2022-04-06T03:08:45.726Z",
-    "headers": [],
+    "modified": "2022-04-14T05:12:34.428Z",
+    "headers": [
+      {
+        "name": "User-Agent",
+        "value": "Thunder Client"
+      }
+    ],
     "params": [],
     "tests": []
   },
@@ -67,24 +74,13 @@
     "colId": "70e08154-3570-4174-be50-e66b8089b8fb",
     "containerId": "",
     "name": "日对账单差错：渠道数据",
-    "url": "{{host}}/settle/errors/statements/{{settle_date}}/ztfz?page_size=2&last_id=1308245",
+    "url": "{{host}}/settle/errors/statements/{{settle_date}}",
     "method": "GET",
     "sortNum": 40000,
     "created": "2022-04-06T03:17:09.026Z",
-    "modified": "2022-04-14T03:50:20.263Z",
+    "modified": "2022-04-14T07:13:14.060Z",
     "headers": [],
-    "params": [
-      {
-        "name": "page_size",
-        "value": "2",
-        "isPath": false
-      },
-      {
-        "name": "last_id",
-        "value": "1308245",
-        "isPath": false
-      }
-    ],
+    "params": [],
     "tests": []
   },
   {
