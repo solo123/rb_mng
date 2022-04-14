@@ -4,16 +4,15 @@ module Ns
       hash_branch("settle") do |r|
         page_size = r.params['page_size']&.to_i || 50
         cnd = {}
-        cnd.merge!({_id: {'$gt': r.params['big_id'].to_i}}) if r.params['big_id']
-        cnd.merge!({_id: {'$lt': r.params['small_id'].to_i}}) if r.params['small_id']
-
         r.get('index') {
-          Ns::Settlement.where(cnd).order(_id: -1).limit(page_size).all.to_a
+          cnd = {_id: {'$lt': r.params['last_id'.to_i]}} if r.params['last_id']
+          Ns::Settlement.where(cnd).order(_id: -1).limit(page_size).all.map{|s| s.attributes.slice(:_id,:s_date,:orders_count,:refunds_count,:statements_count,:orders_error_count,:refunds_error_count,:statements_count)}
         }
         r.get(String){|dt|
           Ns::Settlement.find_by(s_date: dt.to_date).attributes
         }
         r.on("errors") {
+          cnd = {_id: {'$gt': r.params['last_id'.to_i]}} if r.params['last_id']
           r.get("statements", String) { |dt|
             Ns::ChannelStatement.where(w_date: dt.to_date).and(:settle.ne => 1).and(cnd).order(_id: 1).limit(page_size).all.to_a
           }
