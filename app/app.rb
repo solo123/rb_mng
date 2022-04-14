@@ -13,9 +13,19 @@ module Ns
         "Access-Control-Allow-Credentials" => "true",
         "Access-Control-Expose-Headers" =>  "Authorization",
       }
-      plugin :json, serializer: proc{|o| {code: 0, msg: nil, data: o}.to_json(root: true)}
+      plugin :json, classes: [Array, Hash, String], serializer: proc { |o| 
+        if o.is_a?(String)
+          begin
+            {code: 0, msg: nil, data: JSON.parse(o)}.to_json
+          rescue JSON::ParserError
+            o
+          end
+        else
+          {code: 0, msg: nil, data: o}.to_json
+        end
+      }
       plugin :hash_routes
-
+      
       route do |r|
         response.status = 200
         r.root {

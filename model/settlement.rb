@@ -7,5 +7,8 @@ module Ns
 
     index({ s_date: 1 }, { unique: true, name: "s_date_index" })
 
+    def self.main_fields
+      only(:id, :s_date)
+    end
   end
 end
