@@ -39,7 +39,7 @@ task :deploy do
       in_path(fetch(:current_path)) do
         command %{cp ~/work/pooul_mng/shared/falcon.rb .}
         command %{mkdir -p tmp/}
-        #command %{bundle}
+        command %{bundle}
         command %{eye restart app:svc:mng}
       end
     end
