@@ -1,0 +1,3 @@
+[submodule "service_lib"]
+	path = service_lib
+	url = https://e.coding.net/pooul/Pooul/service_lib.git

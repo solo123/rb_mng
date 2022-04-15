@@ -23,29 +23,18 @@
     "colId": "70e08154-3570-4174-be50-e66b8089b8fb",
     "containerId": "",
     "name": "对账信息列表",
-    "url": "{{host}}/settle/index?page_size=3&last_id=5",
+    "url": "{{host}}/settle/index",
     "method": "GET",
     "sortNum": 20000,
     "created": "2022-04-04T05:54:35.543Z",
-    "modified": "2022-04-14T08:31:23.036Z",
+    "modified": "2022-04-14T09:42:47.409Z",
     "headers": [
       {
         "name": "Authorization",
         "value": "666"
       }
     ],
-    "params": [
-      {
-        "name": "page_size",
-        "value": "3",
-        "isPath": false
-      },
-      {
-        "name": "last_id",
-        "value": "5",
-        "isPath": false
-      }
-    ],
+    "params": [],
     "tests": []
   },
   {
@@ -72,21 +61,23 @@
     "colId": "70e08154-3570-4174-be50-e66b8089b8fb",
     "containerId": "",
     "name": "日对账单差错：渠道数据",
-    "url": "{{host}}/settle/errors/statements/{{settle_date}}?page_size=2&last_id=1095095",
+    "url": "{{host}}/settle/errors/statements/{{settle_date}}",
     "method": "GET",
     "sortNum": 40000,
     "created": "2022-04-06T03:17:09.026Z",
-    "modified": "2022-04-14T08:36:52.667Z",
+    "modified": "2022-04-15T07:33:01.344Z",
     "headers": [],
     "params": [
       {
         "name": "page_size",
         "value": "2",
+        "isDisabled": true,
         "isPath": false
       },
       {
         "name": "last_id",
         "value": "1095095",
+        "isDisabled": true,
         "isPath": false
       }
     ],
@@ -111,21 +102,23 @@
     "colId": "70e08154-3570-4174-be50-e66b8089b8fb",
     "containerId": "",
     "name": "日对账单差错：订单数据",
-    "url": "{{host}}/settle/errors/orders/{{settle_date}}?page_size=2&last_id=61d0ec31be1d2d564cfd8962",
+    "url": "{{host}}/settle/errors/orders/{{settle_date}}",
     "method": "GET",
     "sortNum": 50000,
     "created": "2022-04-06T03:17:09.026Z",
-    "modified": "2022-04-14T08:38:34.692Z",
+    "modified": "2022-04-15T07:33:07.675Z",
     "headers": [],
     "params": [
       {
         "name": "page_size",
         "value": "2",
+        "isDisabled": true,
         "isPath": false
       },
       {
         "name": "last_id",
-        "value": "61d0ec31be1d2d564cfd8962",
+        "value": "61ee5a5101c9117ff50d7d32",
+        "isDisabled": true,
         "isPath": false
       }
     ],
