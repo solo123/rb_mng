@@ -4,13 +4,34 @@
     "colId": "history",
     "containerId": "",
     "name": "{{host}}/ping",
-    "url": "{{host}}/ping",
+    "url": "{{host}}bill_summaries/search_by_platform?merchant_id=8438150322954238&field=total_fee&type=day&month=202112",
     "method": "GET",
     "sortNum": 0,
     "created": "2022-04-04T05:52:56.552Z",
-    "modified": "2022-04-05T17:56:21.795Z",
+    "modified": "2022-04-23T13:26:43.310Z",
     "headers": [],
-    "params": [],
+    "params": [
+      {
+        "name": "merchant_id",
+        "value": "8438150322954238",
+        "isPath": false
+      },
+      {
+        "name": "field",
+        "value": "total_fee",
+        "isPath": false
+      },
+      {
+        "name": "type",
+        "value": "day",
+        "isPath": false
+      },
+      {
+        "name": "month",
+        "value": "202112",
+        "isPath": false
+      }
+    ],
     "tests": []
   },
   {
@@ -60,29 +81,18 @@
     "colId": "history",
     "containerId": "",
     "name": "{{host}}/settle/index?page_size=3&last_id=5",
-    "url": "{{host}}/settle/index?page_size=3&last_id=5",
+    "url": "{{host}}/cms/merchants/next_tenants",
     "method": "GET",
     "sortNum": 0,
     "created": "2022-04-14T05:11:31.074Z",
-    "modified": "2022-04-14T05:11:31.135Z",
+    "modified": "2022-04-21T07:54:51.854Z",
     "headers": [
       {
         "name": "Authorization",
         "value": "666"
       }
     ],
-    "params": [
-      {
-        "name": "page_size",
-        "value": "3",
-        "isPath": false
-      },
-      {
-        "name": "last_id",
-        "value": "5",
-        "isPath": false
-      }
-    ],
+    "params": [],
     "tests": []
   }
 ]

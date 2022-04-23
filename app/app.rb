@@ -4,15 +4,18 @@ require "async/container"
 module Ns
   module Route
     class App < Roda
+      include Ns::Helper
+      
       #plugin :websockets
       plugin :default_headers, {
-        "Content-Type" => "application/json",
+        "Content-Type" => "application/json;charset=utf-8",
         "Access-Control-Allow-Origin" => "*", #todo: is it need to specify ?
         "Access-Control-Allow-Methods" => "GET, POST, PATCH, PUT, DELETE, OPTIONS, OPTNS",
         "Access-Control-Allow-Headers" => "*, Scene, Authorization, Content-Type, Origin, X-Requested-With",
         "Access-Control-Allow-Credentials" => "true",
         "Access-Control-Expose-Headers" =>  "Authorization",
       }
+      plugin :halt
       plugin :json, classes: [Array, Hash, String], serializer: proc { |o| 
         if o.is_a?(String)
           begin
@@ -20,11 +23,18 @@ module Ns
           rescue JSON::ParserError
             o
           end
+        elsif o.is_a?(Hash) && o.include?(:code)
+          o
         else
           {code: 0, msg: nil, data: o}.to_json
         end
       }
       plugin :hash_routes
+      plugin :error_handler
+
+      error do |e|
+        {code: 500, msg: "Oh No! Class:#{e.class.name}", e: e}
+      end
       
       route do |r|
         response.status = 200

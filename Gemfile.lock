@@ -55,9 +55,6 @@ GEM
       rack (>= 1.0)
       samovar (~> 2.1)
     fiber-local (1.0.0)
-    haml (5.2.2)
-      temple (>= 0.8.0)
-      tilt
     i18n (1.10.0)
       concurrent-ruby (~> 1.0)
     localhost (1.1.9)
@@ -96,8 +93,6 @@ GEM
     samovar (2.1.4)
       console (~> 1.0)
       mapping (~> 1.0)
-    temple (0.8.2)
-    tilt (2.0.10)
     timers (4.3.3)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
@@ -108,13 +103,10 @@ PLATFORMS
 DEPENDENCIES
   async-redis
   falcon
-  haml
-  mongo (= 2.15.1)
   mongoid
   require_all
   roda
   roda-websockets
-  tilt
 
 BUNDLED WITH
    2.3.3

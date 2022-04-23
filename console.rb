@@ -2,14 +2,15 @@
 
 require 'require_all'
 require 'mongoid'
+require_all 'helper'
+require_all %w[init app lib service_lib model]
 
-require_all %w[init app lib helper service_lib model]
 include Ns
 
 def reload!(print = true)
   puts "Reloading..." if print
   root_dir = File.expand_path(__dir__)
-  reload_dirs = %w[app config lib helper model model_gw]
+  reload_dirs = %w[app lib service_lib model]
   reload_dirs.each do |dir|
     Dir.glob("#{root_dir}/#{dir}/**/*.rb").each {|f| load(f) }
   end

@@ -8,7 +8,7 @@
     "method": "GET",
     "sortNum": 10000,
     "created": "2022-04-04T05:52:56.552Z",
-    "modified": "2022-04-13T08:27:24.934Z",
+    "modified": "2022-04-21T07:55:19.531Z",
     "headers": [
       {
         "name": "Authorization",
@@ -122,6 +122,72 @@
         "isPath": false
       }
     ],
+    "tests": []
+  },
+  {
+    "_id": "ecdb5088-fcde-4dd2-9b86-9442bc10b96c",
+    "colId": "189a42de-606e-4059-92a4-836e53a8ac62",
+    "containerId": "",
+    "name": "下层代理平台列表",
+    "url": "{{host}}/cms/merchants/next_tenants?merchant_id=3730819610057738",
+    "method": "GET",
+    "sortNum": 10000,
+    "created": "2022-04-21T07:56:01.258Z",
+    "modified": "2022-04-21T09:33:17.324Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "merchant_id",
+        "value": "3730819610057738",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "f990e7f2-9711-47dd-af83-368c09b44747",
+    "colId": "189a42de-606e-4059-92a4-836e53a8ac62",
+    "containerId": "",
+    "name": "平台统计数据",
+    "url": "{{host}}/cms/bill_summaries/search_by_platform?merchant_id=7609332123096874&field=total_fee&type=month&year=2018",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2022-04-23T13:27:32.102Z",
+    "modified": "2022-04-23T18:11:17.130Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "merchant_id",
+        "value": "7609332123096874",
+        "isPath": false
+      },
+      {
+        "name": "field",
+        "value": "total_fee",
+        "isPath": false
+      },
+      {
+        "name": "type",
+        "value": "month",
+        "isPath": false
+      },
+      {
+        "name": "month",
+        "value": "201812",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "year",
+        "value": "2018",
+        "isPath": false
+      }
+    ],
+    "body": {
+      "type": "json",
+      "raw": "{\"search_type\":\"trade_type\",\"value\":\"payment\"}",
+      "form": []
+    },
     "tests": []
   }
 ]

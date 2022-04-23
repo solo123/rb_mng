@@ -1,6 +1,6 @@
 require 'require_all'
 require 'mongoid'
-
+require_all 'helper'
 require_all %w[init app lib service_lib model]
 
 #puts ">> server start..."
