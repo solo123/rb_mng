@@ -60,7 +60,7 @@ task :deploy_test do
         command %{cp ~/test/pooul_mng/shared/falcon.rb .}
         command %{mkdir -p tmp/}
         #command %{bundle}
-        #command %{eye restart app:svc:test}
+        command %{eye restart app:svc:test}
       end
     end
   end

@@ -81,18 +81,39 @@
     "colId": "history",
     "containerId": "",
     "name": "{{host}}/settle/index?page_size=3&last_id=5",
-    "url": "{{host}}/cms/merchants/next_tenants",
-    "method": "GET",
+    "url": "{{host}}/cms/bill_summaries/month_summary?merchant_id=9609932494323355&field=total_fee&type=month&year=2018",
+    "method": "POST",
     "sortNum": 0,
     "created": "2022-04-14T05:11:31.074Z",
-    "modified": "2022-04-21T07:54:51.854Z",
+    "modified": "2022-04-24T19:08:27.705Z",
     "headers": [
       {
         "name": "Authorization",
         "value": "666"
       }
     ],
-    "params": [],
+    "params": [
+      {
+        "name": "merchant_id",
+        "value": "9609932494323355",
+        "isPath": false
+      },
+      {
+        "name": "field",
+        "value": "total_fee",
+        "isPath": false
+      },
+      {
+        "name": "type",
+        "value": "month",
+        "isPath": false
+      },
+      {
+        "name": "year",
+        "value": "2018",
+        "isPath": false
+      }
+    ],
     "tests": []
   }
 ]

@@ -33,6 +33,7 @@ module Ns
       plugin :error_handler
 
       error do |e|
+        puts e.backtrace #TODO: add to error_log
         {code: 500, msg: "Oh No! Class:#{e.class.name}", e: e}
       end
       

@@ -129,16 +129,16 @@
     "colId": "189a42de-606e-4059-92a4-836e53a8ac62",
     "containerId": "",
     "name": "下层代理平台列表",
-    "url": "{{host}}/cms/merchants/next_tenants?merchant_id=3730819610057738",
-    "method": "GET",
+    "url": "{{host}}/cms/merchants/next_tenants?merchant_id=9609932494323355",
+    "method": "POST",
     "sortNum": 10000,
     "created": "2022-04-21T07:56:01.258Z",
-    "modified": "2022-04-21T09:33:17.324Z",
+    "modified": "2022-04-23T19:33:40.692Z",
     "headers": [],
     "params": [
       {
         "name": "merchant_id",
-        "value": "3730819610057738",
+        "value": "9609932494323355",
         "isPath": false
       }
     ],
@@ -149,16 +149,16 @@
     "colId": "189a42de-606e-4059-92a4-836e53a8ac62",
     "containerId": "",
     "name": "平台统计数据",
-    "url": "{{host}}/cms/bill_summaries/search_by_platform?merchant_id=7609332123096874&field=total_fee&type=month&year=2018",
+    "url": "{{host}}/cms/bill_summaries/search_by_platform?merchant_id=9609932494323355&field=total_fee&type=month&year=2018",
     "method": "POST",
     "sortNum": 20000,
     "created": "2022-04-23T13:27:32.102Z",
-    "modified": "2022-04-23T18:11:17.130Z",
+    "modified": "2022-04-23T19:33:19.287Z",
     "headers": [],
     "params": [
       {
         "name": "merchant_id",
-        "value": "7609332123096874",
+        "value": "9609932494323355",
         "isPath": false
       },
       {
@@ -188,6 +188,76 @@
       "raw": "{\"search_type\":\"trade_type\",\"value\":\"payment\"}",
       "form": []
     },
+    "tests": []
+  },
+  {
+    "_id": "3b3055a1-8da4-439d-bca5-5b493e1b604a",
+    "colId": "189a42de-606e-4059-92a4-836e53a8ac62",
+    "containerId": "",
+    "name": "合作伙伴维度",
+    "url": "{{host}}/cms/bill_summaries/search_by_partner?merchant_id=9609932494323355&field=total_fee&type=month&year=2018",
+    "method": "POST",
+    "sortNum": 30000,
+    "created": "2022-04-24T18:02:53.056Z",
+    "modified": "2022-04-24T18:03:03.891Z",
+    "headers": [
+      {
+        "name": "Authorization",
+        "value": "666"
+      }
+    ],
+    "params": [
+      {
+        "name": "merchant_id",
+        "value": "9609932494323355",
+        "isPath": false
+      },
+      {
+        "name": "field",
+        "value": "total_fee",
+        "isPath": false
+      },
+      {
+        "name": "type",
+        "value": "month",
+        "isPath": false
+      },
+      {
+        "name": "year",
+        "value": "2018",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "b408465c-4f4f-49e7-9a30-f76e3e7baabe",
+    "colId": "189a42de-606e-4059-92a4-836e53a8ac62",
+    "containerId": "",
+    "name": "月汇总",
+    "url": "{{host}}/cms/bill_summaries/month_summary?merchant_id=9609932494323355&year=2018",
+    "method": "POST",
+    "sortNum": 40000,
+    "created": "2022-04-24T19:08:43.317Z",
+    "modified": "2022-04-24T19:16:06.331Z",
+    "headers": [
+      {
+        "name": "Authorization",
+        "value": "666"
+      }
+    ],
+    "params": [
+      {
+        "name": "merchant_id",
+        "value": "9609932494323355",
+        "isPath": false
+      },
+      {
+        "name": "year",
+        "value": "2018",
+        "isPath": false
+      }
+    ],
     "tests": []
   }
 ]
