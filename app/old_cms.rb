@@ -117,10 +117,13 @@ module Ns
             h
           }
 
-        
-        
+          
+          {code: 500, msg: "[summary] not found"}
+ 
         }
-
+        r.on :all do
+          {code: 500, msg: '[cms] not found'}
+        end
 
       end
     end

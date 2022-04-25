@@ -31,6 +31,9 @@ module Ns
       }
       plugin :hash_routes
       plugin :error_handler
+      plugin :not_found do
+        "Where did it go?"
+      end
 
       error do |e|
         puts e.backtrace #TODO: add to error_log
@@ -93,6 +96,10 @@ module Ns
               rt
             }
           }
+        }
+
+        r.on(:all) { 
+          "NOT FOUND!!"
         }
       end
     end
