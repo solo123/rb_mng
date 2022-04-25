@@ -118,11 +118,11 @@ module Ns
           }
 
           
-          {code: 500, msg: "[summary] not found"}
+          {code: 500, msg: "[summary] not found", r: r.inspect}
  
         }
         r.on :all do
-          {code: 500, msg: '[cms] not found'}
+          {code: 500, msg: '[cms] not found', r: r.inspect}
         end
 
       end
