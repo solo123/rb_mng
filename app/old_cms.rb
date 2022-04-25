@@ -97,6 +97,7 @@ module Ns
               end
             end
             data = partners.select{|k| k[:status]}
+            data = data.map{|d| d.merge(d[:data]).except(:data)}
             {data: data, summary: summary}
           }
    
