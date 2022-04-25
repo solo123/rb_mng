@@ -149,11 +149,11 @@
     "colId": "189a42de-606e-4059-92a4-836e53a8ac62",
     "containerId": "",
     "name": "平台统计数据",
-    "url": "{{host}}/cms/bill_summaries/search_by_platform123?merchant_id=9609932494323355&type=month&year=2022&field=total_count",
-    "method": "PUT",
+    "url": "{{host}}/cms/bill_summaries/search_by_platform?merchant_id=9609932494323355&type=month&year=2022&field=total_count",
+    "method": "POST",
     "sortNum": 20000,
     "created": "2022-04-23T13:27:32.102Z",
-    "modified": "2022-04-25T03:01:48.645Z",
+    "modified": "2022-04-25T06:24:14.068Z",
     "headers": [],
     "params": [
       {
@@ -199,7 +199,7 @@
     "method": "POST",
     "sortNum": 30000,
     "created": "2022-04-24T18:02:53.056Z",
-    "modified": "2022-04-25T03:43:54.533Z",
+    "modified": "2022-04-25T06:11:22.089Z",
     "headers": [
       {
         "name": "Authorization",
@@ -237,9 +237,9 @@
     "name": "月汇总",
     "url": "{{host}}/cms/bill_summaries/month_summary?merchant_id=9609932494323355&year=2018",
     "method": "POST",
-    "sortNum": 40000,
+    "sortNum": 32500,
     "created": "2022-04-24T19:08:43.317Z",
-    "modified": "2022-04-24T19:16:06.331Z",
+    "modified": "2022-04-25T06:12:59.157Z",
     "headers": [
       {
         "name": "Authorization",
@@ -255,6 +255,46 @@
       {
         "name": "year",
         "value": "2018",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "4001cbe1-3c91-49c2-9436-9d55a085f246",
+    "colId": "189a42de-606e-4059-92a4-836e53a8ac62",
+    "containerId": "",
+    "name": "商户平台汇总",
+    "url": "{{host}}/cms/merchant_summaries/search_by_platform?merchant_id=9609932494323355&type=month&year=2018&field=total_count",
+    "method": "POST",
+    "sortNum": 35000,
+    "created": "2022-04-25T06:12:52.669Z",
+    "modified": "2022-04-25T06:42:22.574Z",
+    "headers": [
+      {
+        "name": "Authorization",
+        "value": "666"
+      }
+    ],
+    "params": [
+      {
+        "name": "merchant_id",
+        "value": "9609932494323355",
+        "isPath": false
+      },
+      {
+        "name": "type",
+        "value": "month",
+        "isPath": false
+      },
+      {
+        "name": "year",
+        "value": "2018",
+        "isPath": false
+      },
+      {
+        "name": "field",
+        "value": "total_count",
         "isPath": false
       }
     ],

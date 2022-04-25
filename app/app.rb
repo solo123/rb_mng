@@ -32,7 +32,7 @@ module Ns
       plugin :hash_routes
       plugin :error_handler
       plugin :not_found do
-        "Where did it go?"
+        "[not_found] Where did it go?"
       end
 
       error do |e|
@@ -97,10 +97,7 @@ module Ns
             }
           }
         }
-
-        r.on(:all) { 
-          "NOT FOUND!!"
-        }
+        "no found"
       end
     end
   end

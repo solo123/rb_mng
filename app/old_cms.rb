@@ -1,4 +1,4 @@
-
+require 'debug'
 module Ns
   module Route
     class App < Roda
@@ -117,14 +117,40 @@ module Ns
             h
           }
 
-          
-          {code: 500, msg: "[summary] not found", r: r.inspect}
- 
-        }
-        r.on :all do
-          {code: 500, msg: '[cms] not found', r: r.inspect}
-        end
+          {code: 500, msg: "bill_summaries[#{r.request_method} #{r.path}] not found"}
+        } # end of bill_summaries
 
+        r.on("merchant_summaries"){
+          req_js = parse_json r.body.read
+          r.post('search_by_platform') do
+            pls = Ns::Merchant.find(r.params['merchant_id'])&.sub_platform_ids
+            r.halt(200, res) unless pls && !pls.empty?
+            if r.params['type'] == 'day'
+              dts = (r.params['month'] + '01').to_date.all_month.map{ |d| d.strftime('%Y-%m-%d') }.uniq
+            else
+              dts = (r.params['year'] + '0101').to_date.all_year.map{ |d| d.strftime('%Y-%m') }.uniq
+            end
+
+            pt = Hash.new{|h,k| 
+              v={total: 0}
+              dts.each {|dt| v[dt] = 0}
+              h[k] = v
+            } 
+            summary = Hash.new(0)
+            Static::PlatformTrade.where(:platform_id.in => pls, :s_date.in => dts)
+            .only(:s_date, :platform_id, :amount)
+            .each do |d|
+              pt[d.platform_id][d.s_date] = d.amount
+              pt[d.platform_id][:total] += d.amount
+              summary[d.s_date] += d.amount
+            end
+            { data: pt, summary: summary }
+          end
+
+          {code: 500, msg: "merchant_summaries[#{r.request_method} #{r.path}] not found"}  
+        } # end of merchant_summaries
+
+        {code: 500, msg: "cms[#{r.request_method} #{r.path}] not found"}
       end
     end
   end
