@@ -133,7 +133,7 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2022-04-21T07:56:01.258Z",
-    "modified": "2022-04-23T19:33:40.692Z",
+    "modified": "2022-04-26T17:37:54.722Z",
     "headers": [],
     "params": [
       {
@@ -142,6 +142,11 @@
         "isPath": false
       }
     ],
+    "body": {
+      "type": "json",
+      "raw": "{}",
+      "form": []
+    },
     "tests": []
   },
   {
