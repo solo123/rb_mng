@@ -17,7 +17,11 @@ module Ns
       end
 
       def get_merchant_by_id(mid)
-        m = Ns::Merchant.find(mid)
+        if mid.nil?
+          m = Ns::Merchant.where({parent_id: nil, status: 5}).frist
+        else
+          m = Ns::Merchant.find(mid)
+        end
         raise "merchent:#{mid} not found." unless m
         m
       end

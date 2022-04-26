@@ -16,10 +16,12 @@ module Ns
         r.on("merchants") {
           r.post("next_tenants") {
             #TODO: 加上登录后权限和用户类型，识别可用哪些下级
-            Ns::Merchant.where(parent_id: r.params['merchant_id']).and(status: 5)
+            ms = Ns::Merchant.where(parent_id: r.params['merchant_id']).and(status: 5)
               .and(:doc_type.ne => 'Ns::CommMerchant')
-              .only(:_id, :business, :created_at, :updated_at, :doc_type, :level_code, :platform_merchant_id, :role_id)
-              .limit(page_size).all.to_a
+              .only(:_id, :business, :created_at, :updated_at, :doc_type, :level_code, :platform_merchant_id, :role_id, :status)
+              .limit(page_size).all.as_json
+            ms.map{|v| v['_type'] = v.delete('doc_type')}
+            ms
           }
         }
 
