@@ -3,8 +3,15 @@ module Ns
   module Route
     class App < Roda
       hash_branch("cms") do |r|
-        page_size = r.params['page_size']&.to_i || 100
-        cnd = {}
+        r.get('csv', String) { |fn|
+          response['Content-Type'] = 'text/csv'
+          response['Content-Disposition'] = "attachment; filename=#{fn}"
+          response['Pragma'] = 'no-cache'
+          stream do |out|
+            ['a', 'b', 'c', fn].each{|v| out << v}
+          end
+        }
+        
         r.on("merchants") {
           r.post("next_tenants") {
             #TODO: 加上登录后权限和用户类型，识别可用哪些下级
@@ -99,7 +106,7 @@ module Ns
             .each do |d|
               pt[d.platform_id][d.s_date] = d[fld]
             end
-            old_format_output(pt, dts)
+            old_format_output(pt, dts, r.params['export']=='csv')
           }
 
           {code: 404, msg: "merchant_summaries[#{r.request_method} #{r.path}] not found"}  
@@ -116,7 +123,7 @@ module Ns
         end
       end
 
-      def old_format_output(src_data, date_list)
+      def old_format_output(src_data, date_list, export_file=false)
         mids = {}
         summary = {}
         date_list.each {|dt| summary[dt] = 0}
@@ -138,7 +145,12 @@ module Ns
         Ns::Merchant.where(:_id.in => mids.keys).each do |m|
           mids[m.id]['name'] = m.business&.dig('short_name')
         end
-        {data: mids.values, summary: summary}
+        res = {data: mids.values, summary: summary}
+        if export_file
+          res[:code] = 'csv'
+        else
+          res
+        end
       end
     end
   end

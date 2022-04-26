@@ -265,11 +265,11 @@
     "colId": "189a42de-606e-4059-92a4-836e53a8ac62",
     "containerId": "",
     "name": "商户平台汇总",
-    "url": "{{host}}/cms/merchant_summaries/search_by_platform?merchant_id=9609932494323355&type=month&year=2018&field=total_count",
+    "url": "{{host}}/cms/merchant_summaries/search_by_platform?merchant_id=9609932494323355&type=month&year=2018&field=total_count&export=csv",
     "method": "POST",
     "sortNum": 35000,
     "created": "2022-04-25T06:12:52.669Z",
-    "modified": "2022-04-25T06:42:22.574Z",
+    "modified": "2022-04-26T14:44:17.870Z",
     "headers": [
       {
         "name": "Authorization",
@@ -295,6 +295,11 @@
       {
         "name": "field",
         "value": "total_count",
+        "isPath": false
+      },
+      {
+        "name": "export",
+        "value": "csv",
         "isPath": false
       }
     ],

@@ -34,6 +34,7 @@ module Ns
       plugin :not_found do
         "[not_found] Where did it go?"
       end
+      plugin :streaming
 
       error do |e|
         #r = ErrMsg.get(code_key).merge!(opt)
