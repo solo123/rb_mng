@@ -1,10 +1,10 @@
 require "roda"
 require "async/container"
-
+require 'debug'
 module Ns
   module Route
     class App < Roda
-      include Ns::Helper
+      include RouteHelper
       
       #plugin :websockets
       plugin :default_headers, {
@@ -36,12 +36,29 @@ module Ns
       end
 
       error do |e|
-        puts e.backtrace #TODO: add to error_log
-        {code: 500, msg: "Oh No! Class:#{e.class.name}", e: e}
+        #r = ErrMsg.get(code_key).merge!(opt)
+        trace = {
+          env:           "#{ENV['RACK_ENV']} - #{ENV['APP_ENV']}",
+          ua:            env['HTTP_USER_AGENT'],
+          ip:            request.ip,
+          req_time:      Time.current.to_s,
+          url:           "#{request.request_method} #{request.url}",
+          raw_body:      @raw_body,
+          posted_json:   @t,
+          Exception:     "[#{e.class.name}] #{e.message}",
+          ex_extra:      e.try(:ex_extra),
+          tline:         e.backtrace.first(30).reverse,
+        }
+        Ns::ErrLog.create(trace)
+        #r[:debug_id] = ErrLog.create(r.merge(trace: trace)).id
+        {code: 500, msg: "App Error"}
       end
       
       route do |r|
         response.status = 200
+        @raw_body = r.body.read
+        @t = parse_json(@raw_body)
+
         r.root {
           "Home here"
         }

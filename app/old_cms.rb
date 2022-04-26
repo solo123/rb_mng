@@ -14,54 +14,27 @@ module Ns
               .limit(page_size).all.to_a
           }
         }
+
         r.on("bill_summaries"){
           req_js = parse_json r.body.read
           r.post("search_by_platform"){
-            res = {data: [], summary: {}}
-            # r.halt 500, {code: 500, msg: "my halt"}
-            pls = Ns::Merchant.find(r.params['merchant_id'])&.sub_platform_ids
-            r.halt(200, res) unless pls && !pls.empty?
-            if r.params['type'] == 'day'
-              dts = (r.params['month'] + '01').to_date.all_month.map{ |d| d.strftime('%Y-%m-%d') }.uniq
-            else
-              dts = (r.params['year'] + '0101').to_date.all_year.map{ |d| d.strftime('%Y-%m') }.uniq
-            end
-            pt = Hash.new{|h,k| 
-              v={}
-              dts.each {|dt| v[dt] = 0}
-              h[k] = v
-            }            
+            pls = get_merchant_by_id(r.params['merchant_id']).sub_platform_ids
+            r.halt(200, {}) unless pls && !pls.empty?
+
+            pt = Hash.new{|h,k| h[k]=h.dup.clear}        
+            dts = get_date_array(r.params['type'], r.params['month'] || r.params['year'])
             Static::PlatformTrade.where(:platform_id.in => pls, :s_date.in => dts)
               .only(:s_date, :platform_id, :amount)
               .each do |d|
               pt[d.platform_id][d.s_date] = d.amount
             end
-            data= []
-            summary = {}
-            dts.each {|dt| summary[dt] = 0}
-            pt.each do |k,v|
-              tot = 0
-              v.each do |vk,vv| 
-                tot += vv
-                summary[vk] += vv
-              end
-              v[:merchant_id] = k
-              v[:name] = ''
-              v[:total] = tot
-              data << v
-            end
-            {data: data, summary: summary, body: req_js}
+            old_format_output(pt, dts)
           }
+
           r.post("search_by_partner"){
-            res = {data: [], summary: {}}
-            # r.halt 500, {code: 500, msg: "my halt"}
             m = Ns::Merchant.find(r.params['merchant_id'])
-            r.halt(200, res) unless m&.doc_type != 'Ns::CommMerchant'
-            if r.params['type'] == 'day'
-              dts = (r.params['month'] + '01').to_date.all_month.map{ |d| d.strftime('%Y-%m-%d') }.uniq
-            else
-              dts = (r.params['year'] + '0101').to_date.all_year.map{ |d| d.strftime('%Y-%m') }.uniq
-            end
+            r.halt(200, {}) unless m && m.doc_type != 'Ns::CommMerchant'
+            dts = get_date_array(r.params['type'], r.params['month'] || r.params['year'])
             partners = []
             m.next_level.where(doc_type: 'Ns::PartnerMerchant').each do |pn|
               partner = {
@@ -77,13 +50,9 @@ module Ns
             pls = Ns::Merchant.find(r.params['merchant_id'])&.sub_platform_ids
             r.halt(200, res) unless pls && !pls.empty?
 
-            pt = Hash.new{|h,k| 
-              v={}
-              dts.each {|dt| v[dt] = 0}
-              h[k] = v
-            }
+            pt = Hash.new{|h,k| h[k]=h.dup.clear}
             summary = {}
-            dts.each {|dt| summary[dt] = 0}           
+            dts.each {|dt| summary[dt] = 0}
             Static::PlatformTrade.where(:platform_id.in => pls, :s_date.in => dts)
               .only(:s_date, :platform_id, :amount, :level_code)
               .each do |d|
@@ -100,11 +69,9 @@ module Ns
             data = data.map{|d| d.merge(d[:data]).except(:data)}
             {data: data, summary: summary}
           }
-   
+
           r.post('month_summary')  {
-            m = Ns::Merchant.find(r.params['merchant_id'])
-            r.halt(200, {code: 201, msg: 'empty'}) unless m
-            pls = m.sub_platform_ids
+            pls = get_merchant_by_id(r.params['merchant_id']).sub_platform_ids
             dts = ('01'..'12').map{|m| "#{r.params['year']}-#{m}"}
             h = Hash.new { |h, k| h[k] = Hash.new(0) }
             Static::PlatformTrade.where(:platform_id.in => pls, :s_date.in => dts).each do |s|
@@ -117,40 +84,59 @@ module Ns
             h
           }
 
-          {code: 500, msg: "bill_summaries[#{r.request_method} #{r.path}] not found"}
+          # 404 here
+          {code: 404, msg: "bill_summaries[#{r.request_method} #{r.path}] not found"}
         } # end of bill_summaries
 
         r.on("merchant_summaries"){
           req_js = parse_json r.body.read
-          r.post('search_by_platform') do
-            pls = Ns::Merchant.find(r.params['merchant_id'])&.sub_platform_ids
-            r.halt(200, res) unless pls && !pls.empty?
-            if r.params['type'] == 'day'
-              dts = (r.params['month'] + '01').to_date.all_month.map{ |d| d.strftime('%Y-%m-%d') }.uniq
-            else
-              dts = (r.params['year'] + '0101').to_date.all_year.map{ |d| d.strftime('%Y-%m') }.uniq
-            end
+          r.post('search_by_platform') {
+            pls = get_merchant_by_id(r.params['merchant_id']).sub_platform_ids
+            dts = get_date_array(r.params['type'], r.params['month'] || r.params['year'])
 
             pt = Hash.new{|h,k| 
               v={total: 0}
               dts.each {|dt| v[dt] = 0}
               h[k] = v
             } 
-            summary = Hash.new(0)
+
             Static::PlatformTrade.where(:platform_id.in => pls, :s_date.in => dts)
             .only(:s_date, :platform_id, :amount)
             .each do |d|
               pt[d.platform_id][d.s_date] = d.amount
               pt[d.platform_id][:total] += d.amount
-              summary[d.s_date] += d.amount
             end
-            { data: pt, summary: summary }
-          end
+            old_format_output(pt, dts)
+          }
 
-          {code: 500, msg: "merchant_summaries[#{r.request_method} #{r.path}] not found"}  
+          {code: 404, msg: "merchant_summaries[#{r.request_method} #{r.path}] not found"}  
         } # end of merchant_summaries
 
-        {code: 500, msg: "cms[#{r.request_method} #{r.path}] not found"}
+        {code: 404, msg: "cms[#{r.request_method} #{r.path}] not found"}
+      end
+
+      def old_format_output(src_data, date_list)
+        mids = {}
+        summary = Hash.new(0)
+
+        src_data.each do |mid, d|
+          item = {}
+          item_tot = 0
+          date_list.each {|dt| item[dt] = 0}
+          d.each do |trade_date, val| 
+            item[trade_date] = val
+            item_tot += val
+            summary[trade_date] += val
+          end
+          item['merchant_id'] = mid
+          item['total'] = item_tot
+          mids[mid] = item
+        end
+
+        Ns::Merchant.where(:_id.in => mids.keys).each do |m|
+          mids[m.id]['name'] = m.business&.dig('short_name')
+        end
+        {data: mids.values, summary: summary}
       end
     end
   end
