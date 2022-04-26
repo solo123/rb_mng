@@ -3,6 +3,7 @@ module Ns
   module Route
     class App < Roda
       hash_branch("cms") do |r|
+        page_size = r.params["page_size"] || 100
         r.get('csv', String) { |fn|
           response['Content-Type'] = 'text/csv'
           response['Content-Disposition'] = "attachment; filename=#{fn}"
