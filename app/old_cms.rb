@@ -16,7 +16,6 @@ module Ns
         }
 
         r.on("bill_summaries"){
-          req_js = parse_json r.body.read
           r.post("search_by_platform"){
             pls = get_merchant_by_id(r.params['merchant_id']).sub_platform_ids
             r.halt(200, {}) unless pls && !pls.empty?
@@ -89,22 +88,16 @@ module Ns
         } # end of bill_summaries
 
         r.on("merchant_summaries"){
-          req_js = parse_json r.body.read
           r.post('search_by_platform') {
             pls = get_merchant_by_id(r.params['merchant_id']).sub_platform_ids
             dts = get_date_array(r.params['type'], r.params['month'] || r.params['year'])
+            fld = static_field(r.params['field'])
 
-            pt = Hash.new{|h,k| 
-              v={total: 0}
-              dts.each {|dt| v[dt] = 0}
-              h[k] = v
-            } 
-
+            pt = Hash.new{|h,k| h[k]=h.dup.clear}
             Static::PlatformTrade.where(:platform_id.in => pls, :s_date.in => dts)
-            .only(:s_date, :platform_id, :amount)
+            .only(:s_date, :platform_id, fld)
             .each do |d|
-              pt[d.platform_id][d.s_date] = d.amount
-              pt[d.platform_id][:total] += d.amount
+              pt[d.platform_id][d.s_date] = d[fld]
             end
             old_format_output(pt, dts)
           }
@@ -115,9 +108,18 @@ module Ns
         {code: 404, msg: "cms[#{r.request_method} #{r.path}] not found"}
       end
 
+      def static_field(para)
+        if para == 'total_count'
+          'cnt'
+        else
+          'amount'
+        end
+      end
+
       def old_format_output(src_data, date_list)
         mids = {}
-        summary = Hash.new(0)
+        summary = {}
+        date_list.each {|dt| summary[dt] = 0}
 
         src_data.each do |mid, d|
           item = {}
