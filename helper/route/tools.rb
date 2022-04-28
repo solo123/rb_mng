@@ -2,7 +2,7 @@ module Ns
   module Route
     module RouteHelper
       def parse_json(str)
-        JSON.parse(str)
+        JSON.parse(str, symbolize_names: true)
       rescue JSON::ParserError
         {}
       end
@@ -18,7 +18,7 @@ module Ns
 
       def get_merchant_by_id(mid)
         if mid.nil?
-          m = Ns::Merchant.where({parent_id: nil, status: 5}).frist
+          m = Ns::Merchant.where({parent_id: nil, status: 5}).first
         else
           m = Ns::Merchant.find(mid)
         end

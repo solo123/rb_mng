@@ -32,10 +32,8 @@ module Ns
 
             pt = Hash.new{|h,k| h[k]=h.dup.clear}        
             dts = get_date_array(r.params['type'], r.params['month'] || r.params['year'])
-            Static::PlatformTrade.where(:platform_id.in => pls, :s_date.in => dts)
-              .only(:s_date, :platform_id, :amount)
-              .each do |d|
-              pt[d.platform_id][d.s_date] = d.amount
+            Static::PlatformTrade.where(:platform_id.in => pls, :s_date.in => dts).each do |d|
+              pt[d.platform_id][d.s_date] = d.select_field(@t).to_i
             end
             old_format_output(pt, dts)
           }

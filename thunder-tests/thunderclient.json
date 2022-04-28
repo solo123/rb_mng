@@ -133,7 +133,7 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2022-04-21T07:56:01.258Z",
-    "modified": "2022-04-26T17:37:54.722Z",
+    "modified": "2022-04-28T02:17:47.944Z",
     "headers": [],
     "params": [
       {
@@ -154,16 +154,16 @@
     "colId": "189a42de-606e-4059-92a4-836e53a8ac62",
     "containerId": "",
     "name": "平台统计数据",
-    "url": "{{host}}/cms/bill_summaries/search_by_platform?merchant_id=9609932494323355&type=month&year=2018&field=total_count",
+    "url": "{{host}}/cms/bill_summaries/search_by_platform?merchant_id=8432983707619151&type=month&year=2021&field=total_count",
     "method": "POST",
     "sortNum": 20000,
     "created": "2022-04-23T13:27:32.102Z",
-    "modified": "2022-04-25T14:10:23.135Z",
+    "modified": "2022-04-28T05:08:12.905Z",
     "headers": [],
     "params": [
       {
         "name": "merchant_id",
-        "value": "9609932494323355",
+        "value": "8432983707619151",
         "isPath": false
       },
       {
@@ -173,12 +173,12 @@
       },
       {
         "name": "year",
-        "value": "2018",
+        "value": "2021",
         "isPath": false
       },
       {
         "name": "month",
-        "value": "201812",
+        "value": "201901",
         "isDisabled": true,
         "isPath": false
       },
