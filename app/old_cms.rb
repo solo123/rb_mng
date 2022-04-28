@@ -4,6 +4,9 @@ module Mng
     class App < Roda
       hash_branch("cms") do |r|
         page_size = r.params["page_size"] || 100
+        @t = {} unless @t
+        @t.merge!({field: r.params['field']})
+        
         r.get('csv', String) { |fn|
           response['Content-Type'] = 'text/csv'
           response['Content-Disposition'] = "attachment; filename=#{fn}"
@@ -35,11 +38,11 @@ module Mng
             Static::PlatformTrade.where(:platform_id.in => pls, :s_date.in => dts).each do |d|
               pt[d.platform_id][d.s_date] = d.select_field(@t).to_i
             end
-            old_format_output(pt, dts).merge(@debug || {})
+            old_format_output(pt, dts).merge(@debug)
           }
 
           r.post("search_by_partner"){
-            m = Ns::Merchant.find(r.params['merchant_id'])
+            m = get_merchant_by_id(r.params['merchant_id'])
             r.halt(200, {}) unless m && m.doc_type != 'Ns::CommMerchant'
             dts = get_date_array(r.params['type'], r.params['month'] || r.params['year'])
             partners = []
@@ -54,7 +57,7 @@ module Mng
               dts.each {|dt| partner[:data][dt] = 0}
               partners << partner
             end
-            pls = Ns::Merchant.find(r.params['merchant_id'])&.sub_platform_ids
+            pls = get_merchant_by_id(r.params['merchant_id'])&.sub_platform_ids
             r.halt(200, res) unless pls && !pls.empty?
 
             pt = Hash.new{|h,k| h[k]=h.dup.clear}
@@ -142,7 +145,7 @@ module Mng
           item['total'] = item_tot
           mids[mid] = item
         end
-
+        mids.reject!{|k,v| v['total'] == 0}
         Ns::Merchant.where(:_id.in => mids.keys).each do |m|
           mids[m.id]['name'] = m.business&.dig('short_name')
         end

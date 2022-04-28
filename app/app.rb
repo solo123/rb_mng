@@ -68,7 +68,6 @@ module Mng
       
       after do |res|
         # res = [200, [headers], [strings]]
-        puts @debug
       end
 
       route do |r|

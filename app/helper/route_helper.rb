@@ -17,7 +17,7 @@ module Mng
       end
 
       def get_merchant_by_id(mid)
-        if mid.nil?
+        if mid.nil? || mid.empty?
           m = Ns::Merchant.where({parent_id: nil, status: 5}).first
           debug_log({use_default_mch: m.id})
         else

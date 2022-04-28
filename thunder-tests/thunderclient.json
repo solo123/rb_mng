@@ -154,27 +154,33 @@
     "colId": "189a42de-606e-4059-92a4-836e53a8ac62",
     "containerId": "",
     "name": "平台统计数据",
-    "url": "{{host}}/cms/bill_summaries/search_by_platform?field=total_fee&type=month&year=2022&ns_dbg=1",
+    "url": "{{host}}/cms/bill_summaries/search_by_platform?field=total_refund_fee&type=month&year=2022&ns_dbg=1",
     "method": "POST",
     "sortNum": 20000,
     "created": "2022-04-23T13:27:32.102Z",
-    "modified": "2022-04-28T09:15:17.877Z",
+    "modified": "2022-04-28T10:20:33.789Z",
     "headers": [],
     "params": [
       {
-        "name": "field",
-        "value": "total_fee",
+        "name": "merchant_id",
+        "value": "5545599732807881",
+        "isDisabled": true,
         "isPath": false
       },
       {
-        "name": "type",
-        "value": "month",
+        "name": "field",
+        "value": "total_refund_fee",
         "isPath": false
       },
       {
         "name": "month",
         "value": "201901",
         "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "type",
+        "value": "month",
         "isPath": false
       },
       {
@@ -200,11 +206,11 @@
     "colId": "189a42de-606e-4059-92a4-836e53a8ac62",
     "containerId": "",
     "name": "合作伙伴维度",
-    "url": "{{host}}/cms/bill_summaries/search_by_partner?merchant_id=9609932494323355&type=month&year=2018&field=total_count",
+    "url": "{{host}}/cms/bill_summaries/search_by_partner?merchant_id&type=month&year=2021&field=total_count",
     "method": "POST",
     "sortNum": 30000,
     "created": "2022-04-24T18:02:53.056Z",
-    "modified": "2022-04-26T03:14:15.849Z",
+    "modified": "2022-04-28T09:44:58.608Z",
     "headers": [
       {
         "name": "Authorization",
@@ -214,7 +220,7 @@
     "params": [
       {
         "name": "merchant_id",
-        "value": "9609932494323355",
+        "value": "",
         "isPath": false
       },
       {
@@ -224,7 +230,7 @@
       },
       {
         "name": "year",
-        "value": "2018",
+        "value": "2021",
         "isPath": false
       },
       {
