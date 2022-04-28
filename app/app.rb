@@ -1,10 +1,12 @@
 require "roda"
 require "async/container"
+require_relative './helper/route_helper'
+
 require 'debug'
-module Ns
+module Mng
   module Route
     class App < Roda
-      include RouteHelper
+      include Helper::RouteHelper
       
       #plugin :websockets
       plugin :default_headers, {
@@ -35,6 +37,7 @@ module Ns
         "[not_found] Where did it go?"
       end
       plugin :streaming
+      plugin :hooks
 
       error do |e|
         #r = ErrMsg.get(code_key).merge!(opt)
@@ -54,11 +57,25 @@ module Ns
         #r[:debug_id] = ErrLog.create(r.merge(trace: trace)).id
         {code: 500, msg: "App Error"}
       end
+
+      before do
+        if Ns::AppConfig.debug && request.params['ns_dbg']
+          @debug = {debug: {start_time: Time.now, path: request.path, params: request.params}}
+        else
+          @debug = {}
+        end
+      end
       
+      after do |res|
+        # res = [200, [headers], [strings]]
+        puts @debug
+      end
+
       route do |r|
         response.status = 200
         @raw_body = r.body.read
         @t = parse_json(@raw_body)
+        debug_log({raw_body: @raw_body, t: @t})
 
         r.root {
           "Home here"

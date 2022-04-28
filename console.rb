@@ -2,10 +2,7 @@
 
 require 'require_all'
 require 'mongoid'
-require_all 'helper'
 require_all %w[init app lib service_lib model]
-
-include Ns
 
 def reload!(print = true)
   puts "Reloading..." if print

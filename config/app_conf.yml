@@ -7,6 +7,7 @@ production:
     prg:  'orders_common'
 
 development:
+  debug: true
   gateway_host: 'http://gateway-test.pooulcloud.cn'
   key_dir: '/opt/szpl_test/current/cert'
   home_dir: '/js/websites/szpl'

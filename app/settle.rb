@@ -1,4 +1,4 @@
-module Ns
+module Mng
   module Route
     class App < Roda
       hash_branch("settle") do |r|

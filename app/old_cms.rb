@@ -1,5 +1,5 @@
 require 'debug'
-module Ns
+module Mng
   module Route
     class App < Roda
       hash_branch("cms") do |r|
@@ -35,7 +35,7 @@ module Ns
             Static::PlatformTrade.where(:platform_id.in => pls, :s_date.in => dts).each do |d|
               pt[d.platform_id][d.s_date] = d.select_field(@t).to_i
             end
-            old_format_output(pt, dts)
+            old_format_output(pt, dts).merge(@debug || {})
           }
 
           r.post("search_by_partner"){
