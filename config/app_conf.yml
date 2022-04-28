@@ -1,4 +1,5 @@
 production:
+  debug: true
   gateway_host: 'http://gateway.pooulcloud.cn'
   key_dir: '/home/prod/szpl/current/cert'
   home_dir: '/home/prod/szpl/current'
