@@ -154,27 +154,27 @@
     "colId": "189a42de-606e-4059-92a4-836e53a8ac62",
     "containerId": "",
     "name": "平台统计数据",
-    "url": "{{host}}/cms/bill_summaries/search_by_platform?field=total_refund_fee&type=month&year=2022&ns_dbg=1",
+    "url": "{{host}}/cms/bill_summaries/search_by_platform?field=merchant_count&type=month&year=2021&ns_dbg=1",
     "method": "POST",
     "sortNum": 20000,
     "created": "2022-04-23T13:27:32.102Z",
-    "modified": "2022-04-28T10:20:33.789Z",
+    "modified": "2022-04-29T17:56:53.543Z",
     "headers": [],
     "params": [
       {
         "name": "merchant_id",
-        "value": "5545599732807881",
+        "value": "",
         "isDisabled": true,
         "isPath": false
       },
       {
         "name": "field",
-        "value": "total_refund_fee",
+        "value": "merchant_count",
         "isPath": false
       },
       {
         "name": "month",
-        "value": "201901",
+        "value": "202105",
         "isDisabled": true,
         "isPath": false
       },
@@ -185,7 +185,7 @@
       },
       {
         "name": "year",
-        "value": "2022",
+        "value": "2021",
         "isPath": false
       },
       {
@@ -196,7 +196,7 @@
     ],
     "body": {
       "type": "json",
-      "raw": "{\"search_type\":\"all\",\"value\":\"payment\"}",
+      "raw": "{\"search_type\":\"trade_type\", \"value\": \"payment\"}",
       "form": []
     },
     "tests": []
@@ -206,11 +206,11 @@
     "colId": "189a42de-606e-4059-92a4-836e53a8ac62",
     "containerId": "",
     "name": "合作伙伴维度",
-    "url": "{{host}}/cms/bill_summaries/search_by_partner?merchant_id&type=month&year=2021&field=total_count",
+    "url": "{{host}}/cms/bill_summaries/search_by_partner?type=month&year=2021&field=merchant_count",
     "method": "POST",
     "sortNum": 30000,
     "created": "2022-04-24T18:02:53.056Z",
-    "modified": "2022-04-28T09:44:58.608Z",
+    "modified": "2022-04-29T18:01:12.688Z",
     "headers": [
       {
         "name": "Authorization",
@@ -221,6 +221,7 @@
       {
         "name": "merchant_id",
         "value": "",
+        "isDisabled": true,
         "isPath": false
       },
       {
@@ -235,7 +236,7 @@
       },
       {
         "name": "field",
-        "value": "total_count",
+        "value": "merchant_count",
         "isPath": false
       }
     ],

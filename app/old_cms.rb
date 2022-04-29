@@ -44,40 +44,25 @@ module Mng
           r.post("search_by_partner"){
             m = get_merchant_by_id(r.params['merchant_id'])
             r.halt(200, {}) unless m && m.doc_type != 'Ns::CommMerchant'
-            dts = get_date_array(r.params['type'], r.params['month'] || r.params['year'])
-            partners = []
-            m.next_level.where(doc_type: 'Ns::PartnerMerchant').each do |pn|
-              partner = {
-                id: pn._id, 
-                name: pn.business && pn.business[:short_name], 
+            partners = {}
+            m.sub_partners.each do |pn|
+              partners[pn.id] = {
                 level_code: pn.level_code,
-                data: {},
-                status: false,
               }
-              dts.each {|dt| partner[:data][dt] = 0}
-              partners << partner
             end
             pls = get_merchant_by_id(r.params['merchant_id'])&.sub_platform_ids
             r.halt(200, res) unless pls && !pls.empty?
 
             pt = Hash.new{|h,k| h[k]=h.dup.clear}
-            summary = {}
-            dts.each {|dt| summary[dt] = 0}
-            Static::PlatformTrade.where(:platform_id.in => pls, :s_date.in => dts)
-              .only(:s_date, :platform_id, :amount, :level_code)
-              .each do |d|
-              
-              summary[d.s_date] += d.amount
-              partners.each do |pn|
-                if d[:level_code]&.starts_with?(pn[:level_code])
-                  pn[:data][pn[:s_date]] = d.amount
-                  pn[:status] = true
+            dts = get_date_array(r.params['type'], r.params['month'] || r.params['year'])
+            Static::PlatformTrade.where(:platform_id.in => pls, :s_date.in => dts).each do |d|
+              partners.each do |mid, dt|
+                if d[:level_code]&.starts_with?(dt[:level_code])
+                  dt[d.s_date] = d.select_field(@t).to_i
                 end
               end
             end
-            data = partners.select{|k| k[:status]}
-            data = data.map{|d| d.merge(d[:data]).except(:data)}
-            {data: data, summary: summary}
+            old_format_output(partners, dts).merge(@debug)
           }
 
           r.post('month_summary')  {
@@ -105,12 +90,10 @@ module Mng
             fld = static_field(r.params['field'])
 
             pt = Hash.new{|h,k| h[k]=h.dup.clear}
-            Static::PlatformTrade.where(:platform_id.in => pls, :s_date.in => dts)
-            .only(:s_date, :platform_id, fld)
-            .each do |d|
-              pt[d.platform_id][d.s_date] = d[fld]
+            Static::PlatformTrade.where(:platform_id.in => pls, :s_date.in => dts).each do |d|
+              pt[d.platform_id][d.s_date] = d.select_field(@t).to_i
             end
-            old_format_output(pt, dts, r.params['export']=='csv')
+            old_format_output(pt, dts)
           }
 
           {code: 404, msg: "merchant_summaries[#{r.request_method} #{r.path}] not found"}  
@@ -131,21 +114,22 @@ module Mng
         mids = {}
         summary = {}
         date_list.each {|dt| summary[dt] = 0}
-
         src_data.each do |mid, d|
           item = {}
           item_tot = 0
-          date_list.each {|dt| item[dt] = 0}
-          d.each do |trade_date, val| 
-            item[trade_date] = val
-            item_tot += val
-            summary[trade_date] += val
+          date_list.each do |dt| 
+            item[dt] = 0
+            if d.include?(dt) && d[dt] != 0
+              item[dt] = d[dt]
+              item_tot += d[dt]
+              summary[dt] += d[dt]
+            end
           end
-          item['merchant_id'] = mid
-          item['total'] = item_tot
+          item[:merchant_id] = mid
+          item[:total] = item_tot
           mids[mid] = item
         end
-        mids.reject!{|k,v| v['total'] == 0}
+        mids.reject!{|k,v| v[:total] == 0}
         Ns::Merchant.where(:_id.in => mids.keys).each do |m|
           mids[m.id]['name'] = m.business&.dig('short_name')
         end
