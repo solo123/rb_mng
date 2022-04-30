@@ -6,4 +6,11 @@ gem 'falcon'
 gem 'mongoid'
 gem 'roda-websockets'
 gem 'roda'
-gem 'debug'
+
+group :test do
+  gem 'faker'
+  gem 'rspec'
+end
+group :test, :development do
+  gem 'debug'
+end

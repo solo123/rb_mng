@@ -3,7 +3,7 @@ module Mng
   module Route
     class App < Roda
       hash_branch("cms") do |r|
-        page_size = r.params["page_size"] || 100
+        page_size = r.params["page_size"] || 300
         @t = {} unless @t
         @t.merge!({field: r.params['field']})
         
@@ -36,7 +36,7 @@ module Mng
             pt = Hash.new{|h,k| h[k]=h.dup.clear}        
             dts = get_date_array(r.params['type'], r.params['month'] || r.params['year'])
             Static::PlatformTrade.where(:platform_id.in => pls, :s_date.in => dts).each do |d|
-              pt[d.platform_id][d.s_date] = d.select_field(@t).to_i
+              pt[d.platform_id][d.s_date] = d.select_field(@t)
             end
             old_format_output(pt, dts).merge(@debug)
           }
@@ -58,7 +58,7 @@ module Mng
             Static::PlatformTrade.where(:platform_id.in => pls, :s_date.in => dts).each do |d|
               partners.each do |mid, dt|
                 if d[:level_code]&.starts_with?(dt[:level_code])
-                  dt[d.s_date] = d.select_field(@t).to_i
+                  dt[d.s_date] = d.select_field(@t)
                 end
               end
             end
@@ -110,7 +110,7 @@ module Mng
         end
       end
 
-      def old_format_output(src_data, date_list, export_file=false)
+      def old_format_output(src_data, date_list, avg=nil,export_file=false)
         mids = {}
         summary = {}
         date_list.each {|dt| summary[dt] = 0}

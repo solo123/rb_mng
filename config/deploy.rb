@@ -53,6 +53,7 @@ task :deploy_test do
   deploy do
     invoke :'git:clone'
     invoke :'deploy:link_shared_paths'
+    invoke :'bundle:install'
     invoke :'deploy:cleanup'
 
     on :launch do
