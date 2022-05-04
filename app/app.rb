@@ -2,7 +2,6 @@ require "roda"
 require "async/container"
 require_relative './helper/route_helper'
 
-require 'debug'
 module Mng
   module Route
     class App < Roda

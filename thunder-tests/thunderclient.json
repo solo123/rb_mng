@@ -154,16 +154,17 @@
     "colId": "189a42de-606e-4059-92a4-836e53a8ac62",
     "containerId": "",
     "name": "平台统计数据",
-    "url": "{{host}}/cms/bill_summaries/search_by_platform?merchant_id=1066169287673341&field=bijun&type=month&year=2021&ns_dbg=1",
+    "url": "{{host}}/cms/bill_summaries/search_by_platform?field=bijun&type=month&year=2021&ns_dbg=1",
     "method": "POST",
     "sortNum": 20000,
     "created": "2022-04-23T13:27:32.102Z",
-    "modified": "2022-04-30T07:39:59.887Z",
+    "modified": "2022-04-30T16:39:09.486Z",
     "headers": [],
     "params": [
       {
         "name": "merchant_id",
         "value": "1066169287673341",
+        "isDisabled": true,
         "isPath": false
       },
       {

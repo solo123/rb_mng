@@ -8,9 +8,11 @@ gem 'roda-websockets'
 gem 'roda'
 
 group :test do
+  gem 'rake'
   gem 'faker'
-  gem 'rspec'
+  gem "minitest"
+  gem 'rack'
+  gem 'rack-test'
 end
 group :test, :development do
-  gem 'debug'
 end
