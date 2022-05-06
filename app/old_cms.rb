@@ -57,19 +57,18 @@ module Mng
             pls_lv.each {|mid, lv| pls_tb[mid]=lv}
             pls = pls_lv.pluck(0)
 
-            pt = Hash.new{|h,k| h[k]=h.dup.clear}
             q = Mng::QueryTrade.new
             cnd = q.translate_query_condition(@t)
             q.platform_static(cnd, pls).each do |d|
               partners.each do |mid, dt|
-                lc = pls_tb[mid]
+                lc = pls_tb[d[:_id][:pid]]
                 if lc&.starts_with?(dt[:level_code])
-                  dt[d.s_date] = {amount: d['amount'], cnt: d['cnt'], refund: d['refund'], active_cnt: d['active_cnt']}
+                  dt[d[:_id][:s_date]] = {amount: d['amount'], cnt: d['cnt'], refund: d['refund'], active_cnt: d['active_cnt']}
                 end
               end
             end
             dts = get_date_array(r.params['type'], r.params['month'] || r.params['year'])
-            old_format_output(pt, cnd, dts).merge(@debug)
+            old_format_output(partners, cnd, dts).merge(@debug)
           }
 
           r.post('month_summary') {
@@ -129,26 +128,29 @@ module Mng
             d[:total_cnt] = 0
           end
           data[mid] = d
-          dts.each {|dt| d[dt] = 0}
-          vs.each do |dt, v|
-            if ft
-              m, c = t[:field]
-              d[dt] = v[c] > 0 ? v[m] / v[c] : 0
-              d[:total_amount] += v[m]
-              d[:total_cnt] += v[c]
-              d[:total] = d[:total_cnt] > 0 ?  d[:total_amount] / d[:total_cnt] : 0
-              if summary[dt].is_a?(Array)
-                summary[dt][0] += v[m]
-                summary[dt][1] += v[c]
+          dts.each do |dt|
+            d[dt] = 0
+            if vs[dt]
+              if ft
+                m, c = t[:field]
+                v = vs[dt]
+                d[dt] = v[c] > 0 ? v[m] / v[c] : 0
+                d[:total_amount] += v[m]
+                d[:total_cnt] += v[c]
+                d[:total] = d[:total_cnt] > 0 ?  d[:total_amount] / d[:total_cnt] : 0
+                if summary[dt].is_a?(Array)
+                  summary[dt][0] += v[m]
+                  summary[dt][1] += v[c]
+                else
+                  summary[dt] = [v[m], v[c]]
+                end
               else
-                summary[dt] = [v[m], v[c]]
+                #puts "type: #{t[:field].is_a?(Array)}"
+                m = vs[dt][t[:field]].to_i
+                d[dt] = m
+                d[:total] += m
+                summary[dt] += m
               end
-            else
-              #puts "type: #{t[:field].is_a?(Array)}"
-              m = v[t[:field]].to_i
-              d[dt] = m
-              d[:total] += m
-              summary[dt] += m
             end
           end
         end

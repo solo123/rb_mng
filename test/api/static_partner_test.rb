@@ -12,6 +12,6 @@ class StaticPartnerTest < MiniTest::Test
     assert last_response.ok?, last_response
     js = JSON.parse last_response.body
     assert_equal  0, js['code']
-    assert js['data'].length > 0, js.to_json
+    assert js['data']['data'].length > 0, js.to_json
   end
 end
