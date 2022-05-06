@@ -22,6 +22,7 @@ module Mng
       elsif t[:active_cnt] == 2
         match1 = match.dup
         match1[:pay_type] = match1.delete :pay_method
+        match1[:pay_type] = 'all' if match1[:pay_type].nil?
         union_with = {
           coll: "static_merchant_active_counts",
           pipeline: [{:$match => match1}],

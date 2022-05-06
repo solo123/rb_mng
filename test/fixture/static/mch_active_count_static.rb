@@ -35,7 +35,7 @@ module Fixture
       def self.seed_data_month
         dates = "2021-01".."2021-12"
         plts = %w(3001 3002)
-        pms = %w(tran pay)
+        pms = %w(tran pay all)
         dates.each do |dt|
           plts.each_with_index do |plt, p_idx|
             pms.each do |pm|
