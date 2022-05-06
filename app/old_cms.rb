@@ -51,15 +51,19 @@ module Mng
                 level_code: pn.level_code,
               }
             end
-            pls = get_merchant_by_id(r.params['merchant_id'])&.sub_platform_ids
-            r.halt(200, res) unless pls && !pls.empty?
+            pls_lv = m.sub_platform_ids_level_code
+            r.halt(200, res) unless pls_lv && !pls_lv.empty?
+            pls_tb = {}
+            pls_lv.each {|mid, lv| pls_tb[mid]=lv}
+            pls = pls_lv.pluck(0)
 
             pt = Hash.new{|h,k| h[k]=h.dup.clear}
             q = Mng::QueryTrade.new
             cnd = q.translate_query_condition(@t)
             q.platform_static(cnd, pls).each do |d|
               partners.each do |mid, dt|
-                if d[:level_code]&.starts_with?(dt[:level_code])
+                lc = pls_tb[mid]
+                if lc&.starts_with?(dt[:level_code])
                   dt[d.s_date] = {amount: d['amount'], cnt: d['cnt'], refund: d['refund'], active_cnt: d['active_cnt']}
                 end
               end
