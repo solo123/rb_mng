@@ -20,9 +20,11 @@ module Mng
         q = [{:$match => match}, {:$group => group}]
         ::Static::MerchantActiveCount.collection.aggregate(q)
       elsif t[:active_cnt] == 2
+        match1 = match.dup
+        match1[:pay_type] = match1.delete :pay_method
         union_with = {
           coll: "static_merchant_active_counts",
-          pipeline: [{:$match => match}],
+          pipeline: [{:$match => match1}],
         }
         q = [{:$match => match},{:$unionWith => union_with},{:$group => group}]
         ::Static::Trade.collection.aggregate(q)
@@ -81,14 +83,14 @@ module Mng
         # {}
       elsif t[:search_type] == 'trade_type'
         if t[:value] == 'payment'
-          match[:pay_method] = /^pay_/
+          match[:pay_method] = /^pay/
         elsif t[:value] == 'fund'
-          match[:pay_method] = /^tran_/
+          match[:pay_method] = /^tran/
         end
       elsif t[:search_type] == 'payment'
-        match[:pay_method] = /^pay_/
+        match[:pay_method] = /^pay/
       elsif t[:search_type] == 'fund'
-        match[:pay_method] = /^tran_/
+        match[:pay_method] = /^tran/
       elsif t[:search_type] == 'channel'
         match[:channel] == t[:value].downcase
       end

@@ -12,10 +12,9 @@ module Fixture
       end
 
       def self.seed_data_day
-        level_codes = %w(001001001 001002001001)
         dates = "2021-01-01".."2021-01-31"
         plts = %w(3001 3002)
-        pms = %w(tran_transfer pay_payment)
+        pms = %w(tran pay)
         dates.each do |dt|
           plts.each_with_index do |plt, p_idx|
             pms.each do |pm|
@@ -24,8 +23,7 @@ module Fixture
                 "active_cnt": 10,
                 "s_date": dt,
                 "platform_id": plt,
-                "pay_method": pm,
-                "level_code": level_codes[p_idx]
+                "pay_type": pm,
               }
               ::Static::MerchantActiveCount.create(js)
             end
@@ -35,10 +33,9 @@ module Fixture
       end
 
       def self.seed_data_month
-        level_codes = %w(001001001 001002001001)
         dates = "2021-01".."2021-12"
         plts = %w(3001 3002)
-        pms = %w(tran_transfer pay_payment)
+        pms = %w(tran pay)
         dates.each do |dt|
           plts.each_with_index do |plt, p_idx|
             pms.each do |pm|
@@ -47,8 +44,7 @@ module Fixture
                 "active_cnt": 100,
                 "s_date": dt,
                 "platform_id": plt,
-                "pay_method": pm,
-                "level_code": level_codes[p_idx]
+                "pay_type": pm,
               }
               ::Static::MerchantActiveCount.create(js)
             end
