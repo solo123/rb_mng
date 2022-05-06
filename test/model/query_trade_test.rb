@@ -22,6 +22,7 @@ module Mng
         month: '202101',
       }
       r = qt.translate_query_condition(t)
+      #puts r
       #{:field=>:cal_active_cnt, :active_cnt=>2, :match=>{:pay_method=>/^pay_/, :s_date=>{:$gte=>"2021-01-01", :$lte=>"2021-01-31"}, :time_period=>"day"}}
       assert_equal /^pay_/, r[:match][:pay_method]
       assert_equal "2021-01-01", r[:match][:s_date][:$gte]
@@ -56,7 +57,7 @@ module Mng
         year: '2021',
       }.symbolize_keys
       r = qt.translate_query_condition(t)
-      puts r
+      #puts r
       #{:field=>:cal_active_cnt, :active_cnt=>2, :match=>{:pay_method=>/^pay_/, :s_date=>{:$gte=>"2021-01-01", :$lte=>"2021-01-31"}, :time_period=>"day"}}
       assert_equal :amount, r[:field], r.to_s
       assert_equal /^pay_/, r[:match][:pay_method]

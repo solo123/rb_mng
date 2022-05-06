@@ -35,7 +35,7 @@ class StaticApiTest < MiniTest::Test
     dt1 = js['data']['data'].first
     assert dt1.is_a?(Hash), "wrong data type: #{dt1.class}"
     assert dt1.include?("2021-01-01")
-    assert_equal 1200, dt1["2021-01-01"]
+    assert_equal 600, dt1["2021-01-01"]
     assert dt1['merchant_id']
     assert dt1['total'] > 0
     assert dt1.include?('name')
@@ -58,7 +58,7 @@ class StaticApiTest < MiniTest::Test
     dt1 = js['data']['data'].first
     assert dt1.is_a?(Hash), "wrong data type: #{dt1.class}"
     assert dt1.include?("2021-01")
-    assert_equal 1200, dt1["2021-01"]
+    assert_equal 600, dt1["2021-01"]
     assert dt1['merchant_id']
     assert dt1['total'] > 0
     assert dt1.include?('name')
@@ -82,7 +82,7 @@ class StaticApiTest < MiniTest::Test
     dt1 = js['data']['data'].first
     assert dt1.is_a?(Hash), "wrong data type: #{dt1.class}"
     assert dt1.include?("2021-01")
-    assert_equal 120, dt1["2021-01"]
+    assert_equal 60, dt1["2021-01"]
     assert dt1['merchant_id']
     assert dt1['total'] > 0
     assert dt1.include?('name')
@@ -100,7 +100,7 @@ class StaticApiTest < MiniTest::Test
 
     assert last_response.ok?
     js = JSON.parse last_response.body
-    puts js
+    #puts js
     assert_equal  0, js['code']
     assert js['data'] && js['data'].include?('data') && js['data'].include?('summary')
 

@@ -84,6 +84,10 @@ module Mng
         elsif t[:value] == 'fund'
           match[:pay_method] = /^tran_/
         end
+      elsif t[:search_type] == 'payment'
+        match[:pay_method] = /^pay_/
+      elsif t[:search_type] == 'fund'
+        match[:pay_method] = /^tran_/
       elsif t[:search_type] == 'channel'
         match[:channel] == t[:value].downcase
       end
