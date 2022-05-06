@@ -131,9 +131,9 @@ module Mng
           dts.each do |dt|
             d[dt] = 0
             if vs[dt]
+              v = vs[dt]
               if ft
                 m, c = t[:field]
-                v = vs[dt]
                 d[dt] = v[c] > 0 ? v[m] / v[c] : 0
                 d[:total_amount] += v[m]
                 d[:total_cnt] += v[c]
@@ -146,7 +146,7 @@ module Mng
                 end
               else
                 #puts "type: #{t[:field].is_a?(Array)}"
-                m = vs[dt][t[:field]].to_i
+                m = v[t[:field]].to_i
                 d[dt] = m
                 d[:total] += m
                 summary[dt] += m
