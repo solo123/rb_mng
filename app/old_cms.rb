@@ -129,7 +129,7 @@ module Mng
           vs.each do |dt, v|
             if ft
               m, c = t[:field]
-              d[dt] = v[m] / v[c]
+              d[dt] = v[c] > 0 ? v[m] / v[c] : 0
               d[:total_amount] += v[m]
               d[:total_cnt] += v[c]
               d[:total] = d[:total_cnt] > 0 ?  d[:total_amount] / d[:total_cnt] : 0
@@ -151,7 +151,7 @@ module Mng
         dts.each do |dt|
           if summary[dt].is_a?(Array)
             m, c = summary[dt]
-            summary[dt] = m / c
+            summary[dt] = c > 0 ?  m / c : 0
           end
         end
 
