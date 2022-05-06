@@ -58,7 +58,7 @@ module Mng
       field = case t[:field]
               when 'total_fee'
                 :amount
-              when 'order_count'
+              when 'order_count', 'total_count', 'business_count', 'dealer_count'
                 :cnt
               when 'total_refund_fee'
                 :refund
@@ -78,10 +78,12 @@ module Mng
       match = {}
       if !t.include?(:search_type)
         # {}
-      elsif t[:search_type] == 'payment'
-        match[:pay_method] = /^pay_/
-      elsif t[:search_type] == 'fund'
-        match[:pay_method] = /^tran_/
+      elsif t[:search_type] == 'trade_type'
+        if t[:value] == 'payment'
+          match[:pay_method] = /^pay_/
+        elsif t[:value] == 'fund'
+          match[:pay_method] = /^tran_/
+        end
       elsif t[:search_type] == 'channel'
         match[:channel] == t[:value].downcase
       end

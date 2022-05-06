@@ -14,6 +14,7 @@ class StaticSummaryTest < MiniTest::Test
     assert_equal  0, js['code']
     assert js['data'].length > 0, js.to_json
   end
+
   def test_static_merchant_summary
     post '/cms/merchant_summaries/search_by_platform?merchant_id=1001&type=month&year=2021&field=total_count'
 
