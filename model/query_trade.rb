@@ -76,7 +76,7 @@ module Mng
                 :amount
               end
       match = {}
-      if !t.include?(:search_type)
+      if !t.include?(:search_type) || t[:search_type] == 'all'
         # {}
       elsif t[:search_type] == 'trade_type'
         if t[:value] == 'payment'

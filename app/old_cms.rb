@@ -117,15 +117,22 @@ module Mng
         data = {}
         summary = {}
         dts.each {|dt| summary[dt] = 0}
+        ft = t[:field].is_a?(Array)
         src_data.each do |mid, vs|
           d = {merchant_id: mid, total: 0}
+          if ft
+            d[:total_amount] = 0
+            d[:total_cnt] = 0
+          end
           data[mid] = d
           dts.each {|dt| d[dt] = 0}
           vs.each do |dt, v|
-            if t[:filed].is_a?(Array)
+            if ft
               m, c = t[:field]
               d[dt] = v[m] / v[c]
-              d[:total] += d[dt]  #简单平均没有用
+              d[:total_amount] += v[m]
+              d[:total_cnt] += v[c]
+              d[:total] = d[:total_cnt] > 0 ?  d[:total_amount] / d[:total_cnt] : 0
               if summary[dt].is_a?(Array)
                 summary[dt][0] += v[m]
                 summary[dt][1] += v[c]
@@ -133,6 +140,7 @@ module Mng
                 summary[dt] = [v[m], v[c]]
               end
             else
+              #puts "type: #{t[:field].is_a?(Array)}"
               m = v[t[:field]].to_i
               d[dt] = m
               d[:total] += m

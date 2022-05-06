@@ -93,7 +93,7 @@ class StaticApiTest < MiniTest::Test
     assert sm.keys.length>0
   end
 
-  def test1_static_by_platform_bijun
+  def test_static_by_platform_bijun
     uri = '/cms/bill_summaries/search_by_platform?merchant_id=3001&field=bijun&type=month&year=2021&ns_dbg=1'
     json = {search_type: "trade_type", value: "payment"}.to_json
     post(uri, json, { 'CONTENT_TYPE' => 'application/json' })
@@ -107,14 +107,14 @@ class StaticApiTest < MiniTest::Test
     dt1 = js['data']['data'].first
     assert dt1.is_a?(Hash), "wrong data type: #{dt1.class}"
     assert dt1.include?("2021-01")
-    assert_equal 3484900, dt1["2021-01"]
+    assert_equal 10, dt1["2021-01"]
     assert dt1['merchant_id']
-    assert dt1['total'] > 0
+    assert_equal 10, dt1['total']
     assert dt1.include?('name')
 
     sm = js['data']['summary']
     assert sm.is_a?(Hash)
-    assert 17509680447, sm["2021-01"]
+    assert 10, sm["2021-01"]
     assert sm.keys.length == 12
   end
 end
