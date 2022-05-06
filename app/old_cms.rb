@@ -39,7 +39,6 @@ module Mng
               pt[d['_id']['pid']][d['_id']['s_date']] = {amount: d['amount'], cnt: d['cnt'], refund: d['refund'], active_cnt: d['active_cnt']}
             end
             dts = get_date_array(r.params['type'], r.params['month'] || r.params['year'])
-            debug_log({org_data: pt})
             old_format_output(pt, cnd, dts).merge(@debug)
           }
 

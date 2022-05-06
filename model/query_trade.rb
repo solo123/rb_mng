@@ -55,6 +55,7 @@ module Mng
     # @return [Hash{}] 新查询条件
     def translate_query_condition(t)
       active_cnt = 0
+      t[:field] = t[:tab] if t[:field].nil?
       field = case t[:field]
               when 'total_fee'
                 :amount
