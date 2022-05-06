@@ -130,7 +130,7 @@ module Mng
           data[mid] = d
           dts.each do |dt|
             d[dt] = 0
-            if vs[dt]
+            if vs.include?(dt)
               v = vs[dt]
               if ft
                 m, c = t[:field]
