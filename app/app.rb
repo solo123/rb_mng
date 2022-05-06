@@ -73,7 +73,7 @@ module Mng
         response.status = 200
         @raw_body = r.body.read
         @t = parse_json(@raw_body)
-        debug_log({raw_body: @raw_body, t: @t})
+        debug_log({ t: @t})
 
         r.root {
           "Home here"
