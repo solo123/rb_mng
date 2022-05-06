@@ -133,9 +133,10 @@ module Mng
                 summary[dt] = [v[m], v[c]]
               end
             else
-              d[dt] = v[t[:field]]
-              d[:total] += v[t[:field]]
-              summary[dt] += v[t[:field]]
+              m = v[t[:field]].to_i
+              d[dt] = m
+              d[:total] += m
+              summary[dt] += m
             end
           end
         end
