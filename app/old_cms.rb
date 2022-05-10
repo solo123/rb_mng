@@ -113,7 +113,7 @@ module Mng
           }
           r.post('export_by_platform'){
             fn = "mch_plt#{Zlib.crc32(@t.to_json)}.csv"
-            full_fn = "/Users/jimmy/tmp/" + fn
+            full_fn = "/home/jimmy/tmp/" + fn
             unless File.exist?(full_fn)
               pls = get_merchant_by_id(r.params['merchant_id']).sub_platform_ids
               pt = Hash.new{|h,k| h[k]=h.dup.clear}
