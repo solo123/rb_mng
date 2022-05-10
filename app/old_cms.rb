@@ -110,12 +110,7 @@ module Mng
             old_format_output(pt, cnd, dts).merge(@debug)
           }
           r.post('export_by_platform'){
-            response['Content-Type'] = 'text/csv'
-            response['Content-Disposition'] = "attachment; filename=#{fn}"
-            response['Pragma'] = 'no-cache'
-            stream do |out|
-              ['a', 'b', 'c', fn].each{|v| out << v}
-            end
+            {code: 0, data: '/abc/def.csv'}
           }
 
           {code: 404, msg: "merchant_summaries[#{r.request_method} #{r.path}] not found"}  
