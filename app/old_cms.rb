@@ -109,6 +109,14 @@ module Mng
             dts = get_date_array(r.params['type'], r.params['month'] || r.params['year'])
             old_format_output(pt, cnd, dts).merge(@debug)
           }
+          r.post('export_by_platform'){
+            response['Content-Type'] = 'text/csv'
+            response['Content-Disposition'] = "attachment; filename=#{fn}"
+            response['Pragma'] = 'no-cache'
+            stream do |out|
+              ['a', 'b', 'c', fn].each{|v| out << v}
+            end
+          }
 
           {code: 404, msg: "merchant_summaries[#{r.request_method} #{r.path}] not found"}  
         } # end of merchant_summaries
@@ -161,16 +169,11 @@ module Mng
           end
         end
 
-        data.reject!{|k,v| v[:total] == 0}
+        data.reject!{|_,v| v[:total] == 0}
         Ns::Merchant.where(:_id.in => data.keys).each do |m|
           data[m.id]['name'] = m.short_name
         end
-        res = {data: data.values, summary: summary}
-        if t[:export_file]
-          res[:code] = 'csv'
-        else
-          res
-        end
+        {data: data.values, summary: summary}
       end
 
     end
