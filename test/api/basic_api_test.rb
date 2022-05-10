@@ -17,6 +17,12 @@ class BasicApiTest < MiniTest::Test
     post '/cms/merchant_summaries/export_by_platform?merchant_id=1001&type=month&year=2021&field=total_count'
 
     assert last_response.ok?
-    puts last_response.body
+    #puts last_response.body
+  end
+  def test_export_plt_csv
+    post '/cms/bill_summaries/export_by_platform?merchant_id=1001&type=month&year=2021&field=total_fee'
+
+    assert last_response.ok?
+    #puts last_response.body
   end
 end

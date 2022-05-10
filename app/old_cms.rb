@@ -45,7 +45,7 @@ module Mng
           }
           r.post('export_by_platform'){
             fn = "plt#{Zlib.crc32(@t.to_json)}.csv"
-            full_fn = "#{NS::AppConfig.download_dir}/#{fn}"
+            full_fn = "#{Ns::AppConfig.download_dir}/#{fn}"
             unless File.exist?(full_fn)
               pls = get_merchant_by_id(r.params['merchant_id']).sub_platform_ids
               r.halt(200, {}) unless pls && !pls.empty?
@@ -136,7 +136,7 @@ module Mng
           }
           r.post('export_by_platform'){
             fn = "mch_plt#{Zlib.crc32(@t.to_json)}.csv"
-            full_fn = "#{NS::AppConfig.download_dir}/#{fn}"
+            full_fn = "#{Ns::AppConfig.download_dir}/#{fn}"
             unless File.exist?(full_fn)
               pls = get_merchant_by_id(r.params['merchant_id']).sub_platform_ids
               pt = Hash.new{|h,k| h[k]=h.dup.clear}

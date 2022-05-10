@@ -9,4 +9,4 @@ development:
 
 test:
   debug: true
-
+  download_dir: '/Users/jimmy/tmp'
