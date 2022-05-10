@@ -95,6 +95,44 @@ module Mng
             dts = get_date_array(r.params['type'], r.params['month'] || r.params['year'])
             old_format_output(partners, cnd, dts).merge(@debug)
           }
+          r.post("export_by_partner"){
+            fn = "partner#{Zlib.crc32(@t.to_json)}.csv"
+            full_fn = "#{Ns::AppConfig.download_dir}/#{fn}"
+            unless File.exist?(full_fn)
+              m = get_merchant_by_id(r.params['merchant_id'])
+              r.halt(200, {}) unless m && m.doc_type != 'Ns::CommMerchant'
+              partners = {}
+              m.sub_partners.each do |pn|
+                partners[pn.id] = {
+                  level_code: pn.level_code,
+                }
+              end
+              pls_lv = m.sub_platform_ids_level_code
+              r.halt(200, res) unless pls_lv && !pls_lv.empty?
+              pls_tb = {}
+              pls_lv.each {|mid, lv| pls_tb[mid]=lv}
+              pls = pls_lv.pluck(0)
+
+              q = Mng::QueryTrade.new
+              cnd = q.translate_query_condition(@t)
+              q.platform_static(cnd, pls).each do |d|
+                partners.each do |mid, dt|
+                  lc = pls_tb[d[:_id][:pid]]
+                  if lc&.starts_with?(dt[:level_code])
+                    dt[d[:_id][:s_date]] = {amount: d['amount'], cnt: d['cnt'], refund: d['refund'], active_cnt: d['active_cnt']}
+                  end
+                end
+              end
+              dts = get_date_array(r.params['type'], r.params['month'] || r.params['year'])
+              data = old_format_output(partners, cnd, dts)
+
+              CSV.open(full_fn, "w", force_quotes: true) do |csv|
+                data_2_csv(csv, data[:data])
+                sm_2_csv(csv, data[:summary])
+              end
+            end
+            {code: 0, data: "https://ws.service.pooul.com/#{fn}"}
+          }
 
           r.post('month_summary') {
             pls = get_merchant_by_id(r.params['merchant_id']).sub_platform_ids

@@ -25,4 +25,10 @@ class BasicApiTest < MiniTest::Test
     assert last_response.ok?
     #puts last_response.body
   end
+  def test_export_partner_csv
+    post '/cms/bill_summaries/export_by_partner?merchant_id=1001&type=month&year=2021&field=total_fee'
+
+    assert last_response.ok?
+    #puts last_response.body
+  end
 end
