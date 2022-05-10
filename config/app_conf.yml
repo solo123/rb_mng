@@ -1,14 +1,10 @@
 production:
   debug: false
-  gateway_host: 'http://gateway.pooulcloud.cn'
-  key_dir: '/home/prod/szpl/current/cert'
-  home_dir: '/home/prod/szpl/current'
-  biz_send:
-    host: '172.18.183.142'
-    prg:  'orders_common'
+  download_dir: '/home/jimmy/tmp'
 
 development:
   debug: true
+  download_dir: '/Users/jimmy/tmp'
 
 
 test:
