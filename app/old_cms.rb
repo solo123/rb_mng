@@ -110,7 +110,7 @@ module Mng
             old_format_output(pt, cnd, dts).merge(@debug)
           }
           r.post('export_by_platform'){
-            {code: 0, data: '/abc/def.csv'}
+            {code: 0, data: 'https://ws.service.pooul.com/abc/def.csv', msg: '成功'}
           }
 
           {code: 404, msg: "merchant_summaries[#{r.request_method} #{r.path}] not found"}  
