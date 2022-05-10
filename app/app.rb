@@ -25,7 +25,7 @@ module Mng
             o
           end
         elsif o.is_a?(Hash) && o.include?(:code)
-          o
+          o.to_json
         else
           {code: 0, msg: nil, data: o}.to_json
         end
