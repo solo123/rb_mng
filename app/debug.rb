@@ -17,7 +17,7 @@ module Mng
           else
             cnd = @t
           end
-          db[model_name].find(cnd).limit(page_size.to_i).to_json
+          db[model_name].find(cnd).limit(page_size.to_i).as_json
         }
 
       end
