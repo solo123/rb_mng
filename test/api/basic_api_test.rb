@@ -35,6 +35,6 @@ class BasicApiTest < MiniTest::Test
   def test_get_statics_trades
     get '/statics/trades?page_size=3&last_id=6987&time_period=month'
     assert last_response.ok?
-    puts last_response.body
+    #puts last_response.body
   end
 end
