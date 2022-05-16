@@ -32,13 +32,6 @@ module Mng
         @debug[:debug].merge!(info)
       end
 
-      def page(r, cc)
-        if r.params['aa'] == '1'
-
-        end
-        cc
-      end
-
       
     end
   end

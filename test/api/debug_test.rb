@@ -13,7 +13,7 @@ class DebugTest < MiniTest::Test
     assert_equal 12, js['code']
   end
   def test_get_table_data
-    get '/debug/p/ns_merchants'
+    get '/debug/p/ns_merchants?page_size=2&last_id=101'
     assert last_response.ok?
     js = JSON.parse last_response.body
     assert_equal 0, js['code']
