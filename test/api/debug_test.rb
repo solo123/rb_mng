@@ -24,7 +24,19 @@ class DebugTest < MiniTest::Test
     assert last_response.ok?
     js = JSON.parse last_response.body
     assert_equal 0, js['code']
-    puts js
+    #puts js
+  end
+  def test_get_table_by_id
+    get '/debug/p/ns_refunds/61c6757001c91160e9c7e71d'
+    assert last_response.ok?
+    js = JSON.parse last_response.body
+    assert_equal 0, js['code']
+
+    get '/debug/p/ns_merchants/3001'
+    assert last_response.ok?
+    js = JSON.parse last_response.body
+    assert_equal 0, js['code']
+    #puts js
   end
 
 end

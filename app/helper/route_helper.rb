@@ -32,6 +32,14 @@ module Mng
         @debug[:debug].merge!(info)
       end
 
+      def to_object_id(str)
+        if BSON::ObjectId.legal?(str)
+          BSON::ObjectId.from_string(str)
+        else
+          str
+        end
+      end
+
       
     end
   end
