@@ -13,7 +13,7 @@ module Mng
           page_size = r.params["page_size"] || 100
           last_id = r.params["last_id"]
           if last_id
-            cnd = @t.merge({_id: {:$gt=> last_id.to_s}})
+            cnd = @t.merge({_id: {:$gt=> to_object_id(last_id)}})
           else
             cnd = @t
           end

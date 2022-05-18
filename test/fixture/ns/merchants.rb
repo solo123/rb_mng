@@ -79,6 +79,32 @@ module Fixture
             "status": 5,
             "updated_at": "2020-04-23T09:33:48.611Z",
           },
+          {
+            "_id": "4001",
+            "business": { "short_name": "商户3001-01" },
+            "created_at": "2019-10-17T02:17:00.858Z",
+            "doc_type": "Ns::CommMerchant",
+            "level_code": "001002001001001",
+            "note": "测试平台02-03",
+            "platform_merchant_id": "3001",
+            "parent_id": "3001",
+            "role_id": 5,
+            "status": 5,
+            "updated_at": "2020-04-23T09:33:48.611Z",
+          },
+          {
+            "_id": "4002",
+            "business": { "short_name": "商户3002-01" },
+            "created_at": "2019-12-17T02:17:00.858Z",
+            "doc_type": "Ns::CommMerchant",
+            "level_code": "001002001001001",
+            "note": "测试平台02-03",
+            "platform_merchant_id": "3001",
+            "parent_id": "3001",
+            "role_id": 5,
+            "status": 5,
+            "updated_at": "2020-04-23T09:33:48.611Z",
+          },
         ]
         js.each do |j|
           m = ::Ns::Merchant.create(j)

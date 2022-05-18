@@ -73,6 +73,7 @@ module Mng
         response.status = 200
         @raw_body = r.body.read
         @t = parse_json(@raw_body)
+        @t.merge!(r.params['q']) if r.params['q']
         debug_log({ t: @t})
 
         r.root {
