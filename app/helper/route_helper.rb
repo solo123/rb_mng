@@ -32,8 +32,20 @@ module Mng
         @debug[:debug].merge!(info)
       end
 
-      def to_object_id(str)
-        if BSON::ObjectId.legal?(str)
+      def to_object_id(tb_name, str)
+        tbs = [
+          "ns_err_logs",
+               "static_platform_merchants",
+               "static_trades",
+               "jobs_my_queues",
+               "static_merchant_actives",
+               "jobs_my_schedules",
+               "acc_settlements",
+               "static_merchant_active_counts",
+               "jobs_my_tasks"]
+        if tbs.include?(tb_name)
+          str.to_i
+        elsif BSON::ObjectId.legal?(str)
           BSON::ObjectId.from_string(str)
         else
           str
