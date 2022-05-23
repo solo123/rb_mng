@@ -20,8 +20,20 @@ class DebugTest < MiniTest::Test
     #puts js
   end
   def test_get_table_data2
-    #TODO: haveto use post body. cannot pass int params.
     get '/debug/p/ns_merchants?page_size=2&last_id=2001'
+    assert last_response.ok?
+    js = JSON.parse last_response.body
+    #puts js
+  end
+  def test_post_table_data
+    params = {
+      q: {
+        status: 5,
+        parent_id: '1001'
+      },
+      sort: {created_at: -1}
+    }
+    post '/debug/p/ns_merchants?page_size=2&last_id=2001', params.to_json
     assert last_response.ok?
     js = JSON.parse last_response.body
     puts js
