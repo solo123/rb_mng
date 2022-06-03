@@ -11,7 +11,7 @@ module Mng
             db['jobs_my_tasks'].insert_one(tsk)
             r.halt 200, {code:0, msg: '成功添加任务', tsk: tsk}
           end
-          r.halt 200, {code: 1, msg: '添加任务失败', params: @t}
+          r.halt 200, {code: 11, msg: '添加任务失败', params: @t}
         }
       end
     end
