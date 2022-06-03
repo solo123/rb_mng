@@ -9,11 +9,10 @@ module Mng
             tsk[:_id] = Ns::AutoIncId.get_next(:Jobs_MyTask)
             db = Mongoid.default_client.database
             db['jobs_my_tasks'].insert_one(tsk)
-            r.halt 200, {code:0, tsk: tsk}
+            r.halt 200, {code:0, msg: '成功添加任务', tsk: tsk}
           end
-          return @t
+          r.halt 200, {code: 1, msg: '添加任务失败', params: @t}
         }
-
       end
     end
   end
