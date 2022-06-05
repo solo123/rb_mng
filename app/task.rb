@@ -7,6 +7,7 @@ module Mng
             tsk = @t.dup
             tsk[:status] = 0
             tsk[:_id] = Ns::AutoIncId.get_next(:Jobs_MyTask)
+            tsk[:created_at] = Time.now
             db = Mongoid.default_client.database
             db['jobs_my_tasks'].insert_one(tsk)
             r.halt 200, {code:0, msg: '成功添加任务', tsk: tsk}
