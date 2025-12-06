@@ -1,4 +1,4 @@
-# Pooul Mng Project
+# Mng Project
 
 Ruby-based backend application built with **Roda**, **Falcon**, and **Mongoid**. It serves as an API service with WebSocket support and asynchronous processing capabilities.
 
